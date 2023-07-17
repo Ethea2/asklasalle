@@ -24,6 +24,10 @@ const usersSchema = new Schema({
     bio: {
         type: String,
         required: true
+    },
+    noPosts: {
+        type: Number,
+        required: true
     }
 }, {timestamps: true})
 

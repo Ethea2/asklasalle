@@ -11,6 +11,18 @@ const postsSchema = new Schema({
     body: {
         type: String,
         required: true
+    },
+    upVote: {
+        type: Number,
+        required: false
+    },
+    downVote: {
+        type: Number,
+        required: false
+    },
+    replies: {
+        type: Number,
+        required: false
     }
 }, {timestamps: true})
 
