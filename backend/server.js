@@ -22,5 +22,7 @@ app.use(express.json())
 
 // routes
 app.use('api/posts', postRoutes);
+// app.use('api/user');
+// app.use('api/comments');
 
 // listen for requests

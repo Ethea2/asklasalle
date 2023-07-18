@@ -25,7 +25,7 @@ const usersSchema = new Schema({
         type: String,
         required: true
     },
-    noPosts: {
+    numPosts: {
         type: Number,
         required: true
     }
