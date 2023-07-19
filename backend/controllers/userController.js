@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 // GET all users
 const get_users = async (req, res) => {
     const users = await User.find({})
-    res.status(200).json(user)
+    res.status(200).json(users)
 }
 
 // GET a single user
@@ -13,8 +13,8 @@ const get_singleUser = async (req, res) =>{
     if (!mongoose.Types.ObjectId.isValid(id)){
         return res.status(404).json({error: 'This user does not exist'})
     }
-    const user = await User.findById(id)
 
+    const user = await User.findById(id)
     if(!user){
         return res.status(404).json({error: 'This user does not exist!'})
     }
