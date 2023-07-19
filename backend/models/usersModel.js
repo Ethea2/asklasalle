@@ -12,18 +12,17 @@ const usersSchema = new Schema({
         type: String,
         required: true
     },
-
-    userName: {
+    username: {
         type: String,
         required: true
     },
     displayName: {
         type: String,
-        required: true
+        required: false
     },
     bio: {
         type: String,
-        required: true
+        required: false
     },
     numPosts: {
         type: Number,

@@ -23,9 +23,9 @@ const get_singlePost = async (req, res) =>{
 
 // CREATE a new post
 const create_post = async (req, res) => {
-    const {title, body, upvote, downvote, replies} = req.body
+    const {title, body, upvote, downvote} = req.body
     try {
-        const post = await Post.create({title, body, upvote, downvote, replies})
+        const post = await Post.create({title, body, upvote, downvote})
         res.status(200).json(post)
     } catch (error) {
         res.status(400).json({error: error.message})
@@ -46,8 +46,7 @@ const delete_post = async (req, res) => {
     res.status(200).json(post)
 }
 
-// EDIT a post
-
+// UPDATE a post
 const edit_post = async (req, res) => {
     const { id } = req.params
     if (!mongoose.Types.ObjectId.isValid(id)){
@@ -68,5 +67,5 @@ module.exports = {
     get_singlePost,
     create_post,
     delete_post,
-    update_post
+    edit_post
 }
