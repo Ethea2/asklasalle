@@ -1,5 +1,5 @@
 const express = require('express');
-const { get_posts, get_singlePost, create_post, delete_post, edit_post } = require('../controllers/postControllers')
+const { get_posts, get_singlePost, create_post, delete_post, edit_post, post_comment } = require('../controllers/postControllers')
 
 const postRouter = express.Router();
 
@@ -17,5 +17,9 @@ postRouter.delete('/:id', delete_post)
 
 // UPDATE a single post
 postRouter.patch('/:id', edit_post)
+
+// POST a new comment
+postRouter.post('/:id/comment', post_comment)
+
 
 module.exports = postRouter

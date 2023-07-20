@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+//import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
 
 const Schema = mongoose.Schema
 
@@ -6,7 +7,8 @@ const usersSchema = new Schema({
     // insert code here
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -14,7 +16,8 @@ const usersSchema = new Schema({
     },
     username: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     displayName: {
         type: String,
@@ -23,11 +26,7 @@ const usersSchema = new Schema({
     bio: {
         type: String,
         required: false
-    },
-    numPosts: {
-        type: Number,
-        default: 0
     }
-}, {timestamps: true})
+}, { timestamps: true })
 
 module.exports = mongoose.model('User', usersSchema);

@@ -1,4 +1,6 @@
 const User = require('../models/usersModel')
+const { uniqueNamesGenerator, colors, animals } = require('unique-names-generator');
+
 const mongoose = require('mongoose')
 
 // GET all users
@@ -8,43 +10,49 @@ const get_users = async (req, res) => {
 }
 
 // GET a single user
-const get_singleUser = async (req, res) =>{
+const get_singleUser = async (req, res) => {
     const { id } = req.params
-    if (!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({error: 'This user does not exist'})
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'This user does not exist' })
     }
 
     const user = await User.findById(id)
-    if(!user){
-        return res.status(404).json({error: 'This user does not exist!'})
+    if (!user) {
+        return res.status(404).json({ error: 'This user does not exist!' })
     }
     res.status(200).json(user)
 }
 
 // CREATE a new user
 const create_user = async (req, res) => {
-    const {email, password, username, displayName, bio, numPosts} = req.body
+    const displayName = uniqueNamesGenerator({
+        dictionaries: [colors, animals],
+        separator: " ",
+        style: "capital"
+    });
+    const { email, password, username } = req.body
     try {
-        const user = await User.create({email, password, username, displayName, bio, numPosts})
+        const user = await User.create({ email, password, username, displayName })
         res.status(200).json(user)
     } catch (error) {
-        res.status(400).json({error: error.message})
+        res.status(400).json({ error: error.message })
     }
 }
 
 // EDIT user info
 
 const edit_userInfo = async (req, res) => {
+
     const { id } = req.params
-    if (!mongoose.Types.ObjectId.isValid(id)){
-        return res.status(404).json({error: 'This user does not exist'})
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'This user does not exist' })
     }
 
-    const user = await User.findOneAndUpdate({_id: id}, {
+    const user = await User.findOneAndUpdate({ _id: id }, {
         ...req.body
     })
-    if(!user){
-        return res.status(404).json({error: 'This user does not exist!'})
+    if (!user) {
+        return res.status(404).json({ error: 'This user does not exist!' })
     }
     res.status(200).json(user)
 }
