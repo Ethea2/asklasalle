@@ -23,9 +23,9 @@ const get_singlePost = async (req, res) =>{
 
 // CREATE a new post
 const create_post = async (req, res) => {
-    const {title, body, upvote, downvote} = req.body
+    const {user, title, body, upvote, downvote, replies} = req.body
     try {
-        const post = await Post.create({title, body, upvote, downvote})
+        const post = await Post.create({user, title, body, upvote, downvote, replies})
         res.status(200).json(post)
     } catch (error) {
         res.status(400).json({error: error.message})
