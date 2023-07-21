@@ -26,6 +26,10 @@ const usersSchema = new Schema({
     bio: {
         type: String,
         required: false
+    },
+    img: {
+        type: String,
+        required: true
     }
 }, { timestamps: true })
 

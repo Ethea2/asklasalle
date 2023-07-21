@@ -1,6 +1,5 @@
 const User = require('../models/usersModel')
 const { uniqueNamesGenerator, colors, animals } = require('unique-names-generator');
-
 const mongoose = require('mongoose')
 
 // GET all users
@@ -30,9 +29,12 @@ const create_user = async (req, res) => {
         separator: " ",
         style: "capital"
     });
+
+    const img = `https://picsum.photos/200?random=${Math.random()}`
+
     const { email, password, username } = req.body
     try {
-        const user = await User.create({ email, password, username, displayName })
+        const user = await User.create({ email, password, username, displayName, img })
         res.status(200).json(user)
     } catch (error) {
         res.status(400).json({ error: error.message })
