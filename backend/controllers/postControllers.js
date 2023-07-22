@@ -6,7 +6,18 @@ const mongoose = require('mongoose')
 const get_posts = async (req, res) => {
     const posts = await Post.find({}).sort({ createdAt: -1 })
     res.status(200).json(posts)
-    console.log("successfully connected")
+}
+
+// GET all posts
+const get_posts_user = async (req, res) => {
+    const { username } = req.params
+
+    const posts = await Post.find({"username" : username }).select({})
+    
+    if (!posts) {
+        return res.status(404).json({ error: 'There are no posts!' })
+    }
+    res.status(200).json(posts)
 }
 
 // GET a single post
@@ -106,13 +117,44 @@ const post_comment = async (req, res) => {
     console.log("post_comment triggered")
 }
 
+// GET all post comments
+const get_comments = async (req, res) => {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'Invalid post ID' });
+    }
+
+    try {
+        // Find the post by its ID and populate the 'replies' field with comments
+        const post = await Post.findById(id).populate('replies');
+
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found' });
+        }
+
+        // Extract the comments from the populated 'replies' field of the post
+        const comments = post.replies;
+
+        if (!comments.length) {
+            return res.status(404).json({ error: 'No comments found for this post' });
+        }
+
+        res.status(200).json(comments);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
 
 
 module.exports = {
     get_posts,
     get_singlePost,
+    get_posts_user,
     create_post,
     delete_post,
     edit_post,
-    post_comment
+    post_comment,
+    get_comments
 }

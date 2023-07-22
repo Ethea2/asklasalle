@@ -29,11 +29,11 @@ const Comments = ({ comment }) => {
         <>
             <div className="comment" class="mb-4 bg-light-blue-gray border border-dark-navy rounded-2xl flex">
                 <div className="main-content" class="w-full py-2 px-4">
-                    <p class="p-2"><Link to={'/viewprofile/' + comment.user}><span class="font-bold text-d-lasalle">@{comment.user}</span> </Link>replied...</p>
+                    <p class="p-2"><Link to={'/viewprofile/' + comment.username }><span class="font-bold text-d-lasalle">@{comment.username  }</span> </Link>replied...</p>
 
                     <hr class="bg-neutral-400 h-0.5 mx-2"></hr>
 
-                    <p class="p-2 mt-2 font-semibold text-lg">{comment.comment}</p>
+                    <p class="p-2 mt-2 font-semibold text-lg">{comment.body}</p>
 
                     <div className="interaction-options" class="flex justify-between mt-6 mb-2 px-2">
 
@@ -66,7 +66,7 @@ const Comments = ({ comment }) => {
 
                             <div className="comments" class="flex gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="my-auto"><path d="M13,11H7a1,1,0,0,0,0,2h6a1,1,0,0,0,0-2Zm4-4H7A1,1,0,0,0,7,9H17a1,1,0,0,0,0-2Zm2-5H5A3,3,0,0,0,2,5V15a3,3,0,0,0,3,3H16.59l3.7,3.71A1,1,0,0,0,21,22a.84.84,0,0,0,.38-.08A1,1,0,0,0,22,21V5A3,3,0,0,0,19,2Zm1,16.59-2.29-2.3A1,1,0,0,0,17,16H5a1,1,0,0,1-1-1V5A1,1,0,0,1,5,4H19a1,1,0,0,1,1,1Z" /></svg>
-                                <p class="">{comment.comments} 0</p>
+                                <p class="">{comment.bodys} 0</p>
                             </div>
                         </div>
 

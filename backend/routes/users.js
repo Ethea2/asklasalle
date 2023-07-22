@@ -10,7 +10,7 @@ const userRouter = express.Router();
 userRouter.get('/', get_users)
 
 // GET single user
-userRouter.get('/:id', get_singleUser)
+userRouter.get('/:username', get_singleUser)
 
 // POST [create] new user
 userRouter.post('/', create_user)

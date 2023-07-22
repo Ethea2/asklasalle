@@ -6,23 +6,39 @@ const useFetch = (url) => {
     const [errorLoading, setErrorLoading] = useState()
 
     useEffect(() => {
-        fetch(url)
-            .then(res => {
-                if (!res.ok) {
-                    throw Error("could not fetch data")
-                }
-                return res.json()
-            })
-            .then(data => {
-                setData(data)
+        const fetchData = async () => {
+            const response = await fetch(url)
+            const json = await response.json()
+            
+            if (response.ok) {
+                setData(json)
+                console.log(json)
                 setIsLoading(false)
-            })
-            .catch(err => {
-                setErrorLoading(err.message)
-                setIsLoading(false)
-            })
-    }, [errorLoading])
+            } else {
+                setErrorLoading("Failed to fetch")
+            }
+        }
+        fetchData()
+    }, [url])
+
     return { data, isLoading, errorLoading }
 }
 
 export default useFetch;
+
+
+        // fetch(url)
+        //     .then(res => {
+        //         if (!res.ok) {
+        //             throw Error("could not fetch data")
+        //         }
+        //         return res.json()
+        //     })
+        //     .then(data => {
+        //         setData(data)
+        //         setIsLoading(false)
+        //     })
+        //     .catch(err => {
+        //         setErrorLoading(err.message)
+        //         setIsLoading(false)
+        //     })

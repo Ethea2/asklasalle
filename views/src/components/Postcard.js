@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import Sharemodal from './Sharemodal'
+import useFetchSimpleUser from '../hooks/useFetchSimpleUser'
 const Postcard = ({ post }) => {
+    const user = useFetchSimpleUser(`/api/user/${post.username}`)
     const [share, setShare] = useState(false)
     const [saved, setSaved] = useState(false)
-
+    
     const save = () => {
 
         if (saved) {
@@ -32,12 +34,15 @@ const Postcard = ({ post }) => {
                 <div className="post-container" class="w-full p-4 flex flex-col justify-between">
                     <div className="user-info " class="w-full p-2 h-1/4 flex gap-2">
                         <div className="rounded-full w-7 h-7 overflow-hidden">
-                            <img src={post.img} class="block object-cover"></img>
+                            {
+                                user &&
+                                <img src={user[0].img} class="block object-cover"></img>
+                            }
                         </div>
 
                         <div className="user-details" class="">
-                            <Link to={'/viewprofile/' + post.user}>
-                                <p>Posted by <span className="text-d-lasalle font-bold">@{post.user}</span></p>
+                            <Link to={'/viewprofile/' + post.username}>
+                                <p>Posted by <span className="text-d-lasalle font-bold">@{post.username}</span></p>
                             </Link>
                         </div>
                     </div>
@@ -47,7 +52,7 @@ const Postcard = ({ post }) => {
                     <div className="post-content" class="p-2 flex flex-col justify-between overflow-hidden">
 
                         <div className="post-preview" class="h-2/4">
-                            <Link to={'/viewpost/' + post.postid} class="text-2xl font-bold">
+                            <Link to={'/viewpost/' + post._id} class="text-2xl font-bold">
                                 <p>{post.title}</p>
                             </Link>
                         </div>

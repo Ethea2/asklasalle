@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 import { useState } from 'react'
 import { toast } from "react-toastify";
 import Sharemodal from "./Sharemodal";
+import useFetchSimpleUser from "../hooks/useFetchSimpleUser";
 
-const PostcardFull = ({ post, user }) => {
+const PostcardFull = ({ post }) => {
     const [share, setShare] = useState(false)
     const [saved, setSaved] = useState(false)
+    const user = useFetchSimpleUser('/api/user/' + post.username)
 
     const save = () => {
 
@@ -32,16 +34,19 @@ const PostcardFull = ({ post, user }) => {
                 <div className="post-container" class="w-full p-4 flex flex-col justify-between">
                     <div className="user-info " class="w-full p-2 h-1/4 flex gap-2">
                         <div className="rounded-full w-7 h-7 overflow-hidden">
-                            <Link to={'/viewprofile/' + post.user}>
-                                <img src={post.img} class="block object-cover"></img>
+                            <Link to={'/viewprofile/' + post.username}>
+                                {
+                                    user &&
+                                    <img src={user[0].img} class="block object-cover"></img>
+                                }
                             </Link>
                         </div>
 
                         <div className="user-details" class="">
                             <p class="flex gap-1">Posted by
                                 <span className="text-d-lasalle font-bold">
-                                    <Link to={'/viewprofile/' + post.user}>
-                                        @{post.user}
+                                    <Link to={'/viewprofile/' + post.username}>
+                                        @{post.username}
                                     </Link>
                                 </span>
                             </p>
@@ -53,7 +58,7 @@ const PostcardFull = ({ post, user }) => {
                     <div className="post-content" class="p-2 flex flex-col justify-between overflow-hidden">
 
                         <div className="post-view" class="h-2/4 mb-4">
-                            <Link to={'/viewpost/' + post.postid} class="text-2xl font-bold">
+                            <Link to={'/viewpost/' + post._id} class="text-2xl font-bold">
                                 <p>{post.title}</p>
                             </Link>
                             <p class="mt-4">{post.body}</p>
@@ -90,7 +95,7 @@ const PostcardFull = ({ post, user }) => {
 
                                 <div className="comments" class="flex gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="my-auto"><path d="M13,11H7a1,1,0,0,0,0,2h6a1,1,0,0,0,0-2Zm4-4H7A1,1,0,0,0,7,9H17a1,1,0,0,0,0-2Zm2-5H5A3,3,0,0,0,2,5V15a3,3,0,0,0,3,3H16.59l3.7,3.71A1,1,0,0,0,21,22a.84.84,0,0,0,.38-.08A1,1,0,0,0,22,21V5A3,3,0,0,0,19,2Zm1,16.59-2.29-2.3A1,1,0,0,0,17,16H5a1,1,0,0,1-1-1V5A1,1,0,0,1,5,4H19a1,1,0,0,1,1,1Z" /></svg>
-                                    <p class="">{post.comments}</p>
+                                    <p class="">{post.replies.length}</p>
                                 </div>
                             </div>
 

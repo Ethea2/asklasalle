@@ -10,12 +10,12 @@ const get_users = async (req, res) => {
 
 // GET a single user
 const get_singleUser = async (req, res) => {
-    const { id } = req.params
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'This user does not exist' })
-    }
+    const { username } = req.params
+    // if (!mongoose.Types.ObjectId.isValid(id)) {
+    //     return res.status(404).json({ error: 'This user does not exist' })
+    // }
 
-    const user = await User.findById(id)
+    const user = await User.find({ "username" : username }).select({})
     if (!user) {
         return res.status(404).json({ error: 'This user does not exist!' })
     }

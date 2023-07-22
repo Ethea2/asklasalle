@@ -1,27 +1,23 @@
 import { useParams, Link } from "react-router-dom";
-import useFetchPost from "../hooks/useFetchPost";
+import useFetch from "../hooks/useFetch";
 import { useEffect, useState } from "react";
 import PostcardFull from "../components/PostcardFull";
 import Navbar from "../components/Navbar";
 import Comments from "../components/Comments"
+import useFetchSimpleUser from "../hooks/useFetchSimpleUser";
 
 const Viewpost = () => {
     const { postid } = useParams()
-    const { data, isLoading, errorLoading } = useFetchPost('http://localhost:8000/posts', postid)
+    const { data, isLoading, errorLoading } = useFetch('/api/askposts/' + postid)
+    const comments = useFetchSimpleUser('/api/askposts/' + postid + '/comment')
 
-    const [comments, setComments] = useState()
-    useEffect(() => {
-        if (isLoading === false) {
-            setComments(data.postcomments)
-        }
-    }, [isLoading])
 
     return (
         <>
 
-        <div className="nav" class="sticky top-0 z-50">
-            <Navbar></Navbar>
-        </div>
+            <div className="nav" class="sticky top-0 z-50">
+                <Navbar></Navbar>
+            </div>
 
             {errorLoading && <div>{errorLoading}</div>}
             {isLoading && <div>loading...</div>}
@@ -46,7 +42,7 @@ const Viewpost = () => {
 
                     {comments && comments.map((comment) => {
                         return (
-                            <Comments comment={comment}/>
+                            <Comments comment={comment} />
                         )
                     })
                     }
