@@ -15,11 +15,11 @@ const Createpost = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const workout = {title, body}
+        const post = {title, body}
 
         const response = await fetch('/api/askposts', {
             method: 'POST',
-            body: JSON.stringify(workout),
+            body: JSON.stringify(post),
             headers: {
                 'Content-Type': 'application/json'
             }

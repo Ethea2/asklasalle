@@ -56,7 +56,10 @@ const Viewprofile = () => {
                 
                 <div className="edit-profile" class="">
                 <button onClick={() => setShow(true)} class="block hover:font-semibold hover:text-teal">Edit Profile</button>
-                <EditProfileModal onClose={() => setShow(false)} show={show}/>
+                {show && <EditProfileModal close={() => setShow(false)} onClose={() => {
+                    setShow(false)
+                    window.location.reload(false)
+                    }} show={show} data={data}/>}
                 </div>
             {/* <Link to={"/viewprofile/" + username + "/edit" }className="w-3/4 m-auto p-4 flex flex-row gap-4 justify-start text-red-600">View Profile as a User</Link> */}
             </div>

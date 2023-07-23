@@ -17,9 +17,6 @@ const Navbar = () => {
                  flex
                  items-center
                  gap-x-5">
-                <div className="notifications" class="bg-sky p-2.5 rounded-xl">
-                    <p>Notifs</p>
-                </div>
                 <div className="logout" class="bg-sky p-2.5 rounded-xl">
                     <Link to="/"><p>Logout</p></Link>
                 </div>
