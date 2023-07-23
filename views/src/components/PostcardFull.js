@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { toast } from "react-toastify";
 import Sharemodal from "./Sharemodal";
 import useFetchSimpleUser from "../hooks/useFetchSimpleUser";
+import EditPostModal from "./EditPostModal";
 
 const PostcardFull = ({ post }) => {
     const [share, setShare] = useState(false)
@@ -27,41 +28,50 @@ const PostcardFull = ({ post }) => {
             setShare(true)
         }
     }
+
+    const [show, setShow] = useState(false)
+
     return (
         <>
             <div className="postcard" class="h-auto border border-dark-navy bg-light-blue-gray flex rounded-2xl m-auto mb-4">
 
                 <div className="post-container" class="w-full p-4 flex flex-col justify-between">
-                    <div className="user-info " class="w-full p-2 h-1/4 flex gap-2">
-                        <div className="rounded-full w-7 h-7 overflow-hidden">
-                            <Link to={'/viewprofile/' + post.username}>
-                                {
-                                    user &&
-                                    <img src={user[0].img} class="block object-cover"></img>
-                                }
-                            </Link>
-                        </div>
+                    <div className="post-header" class="w-full p-2 py-4 flex flex-row justify-between">
+                        <div className="user-info" class="flex flex-row gap-2">
+                            <div className="rounded-full w-7 h-7 overflow-hidden">
+                                <Link to={'/viewprofile/' + post.username}>
+                                    {
+                                        user &&
+                                        <img src={user[0].img} class="block object-cover"></img>
+                                    }
+                                </Link>
+                            </div>
 
-                        <div className="user-details" class="">
-                            <p class="flex gap-1">Posted by
-                                <span className="text-d-lasalle font-bold">
-                                    <Link to={'/viewprofile/' + post.username}>
-                                        @{post.username}
-                                    </Link>
-                                </span>
-                            </p>
+                            <div className="user-details" class="">
+                                <p class="flex gap-1">Posted by
+                                    <span className="text-d-lasalle font-bold">
+                                        <Link to={'/viewprofile/' + post.username}>
+                                            @{post.username}
+                                        </Link>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div className="edit-post">
+                            <button onClick={() => setShow(true)}>Edit</button>
+                            <EditPostModal onClose={() => setShow(false)} show={show}/>
                         </div>
                     </div>
 
                     <hr class="bg-neutral-500 m-2 mt-0.5 h-0.5"></hr>
 
-                    <div className="post-content" class="p-2 flex flex-col justify-between overflow-hidden">
+                    <div className="post-content" class="p-4 flex flex-col justify-between overflow-hidden">
 
-                        <div className="post-view" class="h-2/4 mb-4">
+                        <div className="post-view" class="h-2/4">
                             <Link to={'/viewpost/' + post._id} class="text-2xl font-bold">
                                 <p>{post.title}</p>
                             </Link>
-                            <p class="mt-4">{post.body}</p>
+                            <p class="mt-4 text-justify">{post.body}</p>
                         </div>
 
                         <div className="interaction-options" class="flex justify-between mt-8">
