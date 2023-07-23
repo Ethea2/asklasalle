@@ -11,9 +11,8 @@ const useFetch = (url) => {
             const json = await response.json()
             
             if (response.ok) {
-                setData(json)
-                console.log(json)
                 setIsLoading(false)
+                setData(json)
             } else {
                 setErrorLoading("Failed to fetch")
             }

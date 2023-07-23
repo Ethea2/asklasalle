@@ -7,7 +7,7 @@ const Postcard = ({ post }) => {
     const user = useFetchSimpleUser(`/api/user/${post.username}`)
     const [share, setShare] = useState(false)
     const [saved, setSaved] = useState(false)
-    
+
     const save = () => {
 
         if (saved) {

@@ -1,5 +1,4 @@
 import useFetch from "../hooks/useFetch"
-import useFetchSimpleUser from "../hooks/useFetchSimpleUser";
 import Navbar from "../components/Navbar";
 import Postcard from "../components/Postcard";
 import Sidebar from "../components/Sidebar";

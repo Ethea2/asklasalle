@@ -24,6 +24,7 @@ const usersSchema = new Schema({
         required: false
     },
     bio: {
+        default: "",
         type: String,
         required: false
     },
