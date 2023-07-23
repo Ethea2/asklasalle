@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const postsSchema = new Schema({
     username: {
         type: String,
-        required: true
+        default: 'anon_user'
     },
     title: {
         type: String,
