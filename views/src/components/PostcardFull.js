@@ -1,15 +1,17 @@
-import { Link } from "react-router-dom";
+import { useParams,Link } from "react-router-dom";
 import { useState } from 'react'
 import { toast } from "react-toastify";
 import Sharemodal from "./Sharemodal";
 import useFetchSimpleUser from "../hooks/useFetchSimpleUser";
 import EditPostModal from "./EditPostModal";
+import useFetch from "../hooks/useFetch"
 
 const PostcardFull = ({ post }) => {
     const [share, setShare] = useState(false)
     const [saved, setSaved] = useState(false)
     const user = useFetchSimpleUser('/api/user/' + post.username)
-
+    const { postid } = useParams()
+    const { data } = useFetch('/api/askposts/' + postid)
     const save = () => {
 
         if (saved) {
@@ -59,7 +61,10 @@ const PostcardFull = ({ post }) => {
                         </div>
                         <div className="edit-post">
                             <button onClick={() => setShow(true)}>Edit</button>
-                            <EditPostModal onClose={() => setShow(false)} show={show}/>
+                            {show && <EditPostModal close={() => setShow(false)} onClose={() => {
+                                setShow(false)
+                                window.location.reload(false)
+                                }} show={show} data={data}/>}
                         </div>
                     </div>
 
