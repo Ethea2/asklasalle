@@ -3,12 +3,16 @@ import useFetch from "../hooks/useFetch"
 import useFetchFiltered from "../hooks/useFetchFiltered"
 import Postcard from "../components/Postcard"
 import Navbar from "../components/Navbar"
+import EditProfileModal from "../components/EditProfileModal"
 import useFetchSimpleUser from "../hooks/useFetchSimpleUser"
+import { useState } from "react"
 
 const Viewprofile = () => {
     const { username } = useParams()
     const {data, isLoading, errorLoading} = useFetch('/api/user/' + username)
     const posts = useFetchSimpleUser('/api/askposts/' + username + '/user')
+
+    const [show, setShow] = useState(false)
     
     return (
         <>
@@ -43,13 +47,19 @@ const Viewprofile = () => {
                 </div>
         }
 
-        <div className="user-nav" class="m-auto bg-slate-300">
-            <div className="links" class="w-3/4 m-auto p-4 flex flex-row gap-4 justify-start">
-                <a href="#" class="hover:font-semibold hover:text-teal">Posts</a>
-                <a href="#" class="hover:font-semibold hover:text-teal">Bookmarks</a>
-                <Link to="/createpost" class="hover:font-semibold hover:text-teal">Create Post</Link>
+        <div className="user-nav" class="bg-slate-300 py-6">
+            <div classname="nav-content" class="w-4/6 flex m-auto justify-between">
+                <div className="links" class="flex gap-8">
+                <a href="#" class="block hover:font-semibold hover:text-teal">Posts</a>
+                <Link to="/createpost" class="block hover:font-semibold hover:text-teal">Create Post</Link>
+                </div>
+                
+                <div className="edit-profile" class="">
+                <button onClick={() => setShow(true)} class="block hover:font-semibold hover:text-teal">Edit Profile</button>
+                <EditProfileModal onClose={() => setShow(false)} show={show}/>
+                </div>
+            {/* <Link to={"/viewprofile/" + username + "/edit" }className="w-3/4 m-auto p-4 flex flex-row gap-4 justify-start text-red-600">View Profile as a User</Link> */}
             </div>
-            <Link to={"/viewprofile/" + username + "/edit" }className="w-3/4 m-auto p-4 flex flex-row gap-4 justify-start text-red-600">View Profile as a User</Link>
         </div>
 
         {posts && posts.map((data)=>{

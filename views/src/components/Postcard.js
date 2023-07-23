@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import Sharemodal from './Sharemodal'
 import useFetchSimpleUser from '../hooks/useFetchSimpleUser'
 const Postcard = ({ post }) => {
+    
     const user = useFetchSimpleUser(`/api/user/${post.username}`)
     const [share, setShare] = useState(false)
     const [saved, setSaved] = useState(false)
