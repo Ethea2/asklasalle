@@ -1,5 +1,5 @@
 const express = require('express');
-const { get_posts, get_singlePost, create_post, delete_post, edit_post, post_comment, get_comments, get_posts_user } = require('../controllers/postControllers')
+const { get_posts, get_singlePost, create_post, delete_post, edit_post, post_comment, get_comments, get_posts_user, delete_comment } = require('../controllers/postControllers')
 
 const postRouter = express.Router();
 
@@ -26,6 +26,8 @@ postRouter.get('/:id/comment', get_comments)
 
 // GET single post by user
 postRouter.get('/:username/user', get_posts_user)
+
+postRouter.delete('/:postId/comment/:commentId', delete_comment)
 
 
 module.exports = postRouter
