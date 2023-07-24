@@ -15,8 +15,8 @@ const EditPostModal = ({show, onClose, data}) => {
 
         const post = {title, body}
 
-        console.log('/api/askposts/' + data)
-        const response = await fetch('/api/askposts/' + data, {
+        console.log('/api/askposts/' + data._id)
+        const response = await fetch('/api/askposts/' + data._id, {
             method: 'PATCH',
             body: JSON.stringify(post),
             headers: {

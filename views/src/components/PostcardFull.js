@@ -11,7 +11,7 @@ const PostcardFull = ({ post }) => {
     const [saved, setSaved] = useState(false)
     const user = useFetchSimpleUser('/api/user/' + post.username)
     const { postid } = useParams()
-    const { data } = useFetch('/api/askposts/' + postid)
+    const { data, isLoading, errorLoading } = useFetch('/api/askposts/' + postid)
     const save = () => {
 
         if (saved) {
@@ -59,13 +59,18 @@ const PostcardFull = ({ post }) => {
                                 </p>
                             </div>
                         </div>
-                        <div className="edit-post">
-                            <button onClick={() => setShow(true)}>Edit</button>
-                            {show && <EditPostModal close={() => setShow(false)} onClose={() => {
-                                setShow(false)
-                                window.location.reload(false)
-                                }} show={show} data={data}/>}
-                        </div>
+                        {errorLoading && <div>{errorLoading}</div>}
+                        {isLoading && <div>loading...</div>}
+                        {data &&
+                            <div className="edit-post">
+                                <button onClick={() => setShow(true)}>Edit</button>
+                                {show && <EditPostModal close={() => setShow(false)} onClose={() => {
+                                    setShow(false)
+                                    window.location.reload(false)
+                                    }} show={show} data={data}/>}
+                                    
+                            </div>
+                        }
                     </div>
 
                     <hr class="bg-neutral-500 m-2 mt-0.5 h-0.5"></hr>
