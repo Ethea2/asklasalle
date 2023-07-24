@@ -39,9 +39,11 @@ const Viewpost = () => {
 
                 <hr class="bg-stone-500 h-0.5 mx-4"></hr>
 
-                <AddComment/>
+                <div className="add-comment-sec" class="w-full mt-4 p-4">
+                    <AddComment/>
+                </div>
 
-                <div className="comment-container" class="w-full mt-6 p-4">
+                <div className="comment-container" class="w-full mt-2 p-4">
 
                     {comments && comments.map((comment) => {
                         return (
