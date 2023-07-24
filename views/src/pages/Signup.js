@@ -1,9 +1,48 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export const Signup = () => {
 
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPass, setConfirmation] = useState('')
+    const [error, setError] = useState('')
+
     const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        const user = {username, email, password}
+        
+        const response = await fetch('/api/user/', {
+            method: 'POST',
+            body: JSON.stringify(user),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const json = await response.json()
+
+        if(!response.ok){
+            setError(json.error)
+        }
+
+        if(response.ok){
+
+            if (password === confirmPass){
+                setUsername('')
+                setEmail('')
+                setPassword('')
+                setError(null)
+                navigate('/viewprofile/' + username)
+                console.log('new user addded')
+            }
+            
+        }
+    }
 
     return (
         <>
@@ -20,29 +59,27 @@ export const Signup = () => {
                 <div className="input-fields" class="w-3/4 m-auto">
                     <div className="input-username" class="w-full m-auto mb-6 flex flex-col justify-start">
                         <label htmlFor="username" class="text-white text-xs mb-0.5">Username</label>
-                        <input type="text" required="" class="p-2 rounded-lg"/>
+                        <input onChange={(e) => setUsername(e.target.value)} value={username} type="text" required="true" class="p-2 rounded-lg"/>
                     </div>
 
                     <div className="input-email" class="w-full m-auto mb-6 flex flex-col justify-start">
                         <label htmlFor="email" class="text-white text-xs mb-0.5">Email</label>
-                        <input type="email" name="email" id="email" required="" class="p-2 rounded-lg"/>
+                        <input onChange={(e) => setEmail(e.target.value)} value={email} type="email" name="email" id="email" required="" class="p-2 rounded-lg"/>
                     </div>
 
                     <div className="input-password" class="w-full m-auto mb-6 flex flex-col justify-start">
                         <label htmlFor="password" class="text-white text-xs mb-0.5">Password</label>
-                        <input type="password" name="password" id="password" required="" class="p-2 rounded-lg"/>
+                        <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" name="password" id="password" required="" class="p-2 rounded-lg"/>
                     </div>
 
                     <div className="input-password-confirmation" class="w-full m-auto mb-6 flex flex-col justify-start">
                         <label htmlFor="password" class="text-white text-xs mb-0.5">Confirm Password</label>
-                        <input type="password" name="password" id="password" required="" class="p-2 rounded-lg"/>
+                        <input onChange={(e) => setConfirmation(e.target.value)} value={confirmPass} type="password" name="password" id="password" required="" class="p-2 rounded-lg"/>
                     </div>
                 </div>
 
                 <div className="create-acc-button" class="flex justify-center mt-6">
-                    <Link to="/homepage">
-                        <button class="w-max py-2 px-6 rounded-xl bg-teal ease-in duration-75 hover:bg-mint hover:text-dark-navy hover:font-semibold">Create Account</button>
-                    </Link>
+                        <button onClick={handleSubmit} class="w-max py-2 px-6 rounded-xl bg-teal ease-in duration-75 hover:bg-mint hover:text-dark-navy hover:font-semibold">Create Account</button>
                 </div>
 
                 <div className="cancel-button" class="flex justify-center mt-6">
