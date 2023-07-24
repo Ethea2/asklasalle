@@ -1,7 +1,17 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import mainLogo from '../images/logo.png' 
+import { useEffect, useState } from 'react'
 
 const Navbar = () => {
+    const [search, setSearch] = useState('')
+    const navigate = useNavigate()
+
+    const submit = (e) => {
+        if (e.key === 'Enter') {
+            navigate('/search/' + search)
+        } 
+    }
+
     return (
         <nav className="navbar" class="flex bg-dark-navy justify-between items-center sticky top-0 h-auto p-2.5 overflow-hidden">
             <div className="logo">
@@ -10,7 +20,7 @@ const Navbar = () => {
                 </Link>
             </div>
             <div className="search" class="w-2/5">
-                <input type="text" placeholder="Search..." class="p-2.5 w-full rounded-xl border-none bg-slate-100"/>
+                <input onChange={(e) => setSearch(e.target.value)} onKeyDown={submit} type="text" placeholder="Search..." class="p-2.5 w-full rounded-xl border-none bg-slate-100"/>
             </div>
             <div className="links"
                 class="

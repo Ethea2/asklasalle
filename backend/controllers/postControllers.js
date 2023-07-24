@@ -210,6 +210,39 @@ const edit_comment = async (req, res) => {
     }
 };
 
+const search_post = async (req, res) => {
+    const { keywords } = req.query;
+
+    if (!keywords) {
+        return res.status(400).json({ error: 'Please provide search keywords' });
+    }
+
+    try {
+        // Split the search keywords into individual words
+        const keywordArray = keywords.split(' ');
+
+        // Create a regular expression pattern to match any of the words in 'title' or 'body'
+        const regexPattern = keywordArray.map(keyword => `(?=.*\\b${keyword}\\b)`).join('');
+
+        // Find posts that match the regex pattern in 'title' or 'body'
+        const posts = await Post.find({
+            $or: [
+                { title: { $regex: regexPattern, $options: 'i' } },
+                { body: { $regex: regexPattern, $options: 'i' } }
+            ]
+        });
+
+        if (!posts.length) {
+            return res.status(404).json({ error: 'No posts found matching the search criteria' });
+        }
+
+        res.status(200).json(posts);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
 module.exports = {
     get_posts,
     get_singlePost,
@@ -220,5 +253,6 @@ module.exports = {
     post_comment,
     get_comments,
     delete_comment,
-    edit_comment
+    edit_comment,
+    search_post
 }

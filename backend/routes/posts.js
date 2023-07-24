@@ -1,15 +1,19 @@
 const express = require('express');
 const { get_posts,
-        get_singlePost,
-        create_post,
-        delete_post,
-        edit_post, post_comment,
-        get_comments,
-        get_posts_user,
-        delete_comment,
-        edit_comment } = require('../controllers/postControllers')
+    get_singlePost,
+    create_post,
+    delete_post,
+    edit_post, post_comment,
+    get_comments,
+    get_posts_user,
+    delete_comment,
+    edit_comment,
+    search_post } = require('../controllers/postControllers')
 
 const postRouter = express.Router();
+
+//SEARCH posts
+postRouter.get('/search', search_post)
 
 // GET all posts
 postRouter.get('/', get_posts)

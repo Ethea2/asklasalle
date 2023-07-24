@@ -7,6 +7,7 @@ import Viewprofile from "./pages/Viewprofile";
 import Viewprofileuser from "./pages/Viewprofileuser";
 import Createpost from "./pages/Createpost";
 import Viewpostuser from "./pages/Viewpostuser";
+import Search from "./pages/Search"
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -34,6 +35,7 @@ function App() {
         <Route path='/viewpost/:postid/edit' element={<Viewpostuser />} />
         <Route path='/viewprofile/:username' element={<Viewprofile />} />
         <Route path='/viewprofile/:username/edit' element={<Viewprofileuser />} />
+        <Route path='/search/:keywords' element={<Search />} />
       </Routes>
     </div>
   );
