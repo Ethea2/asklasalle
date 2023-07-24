@@ -37,6 +37,9 @@ const Onboarding = () => {
                             </span>
                             <span className="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white">Sign-in</span>
                         </Link>
+                        <Link to="/homepage" className="relative inline-flex items-center justify-start py-3 pl-12 pr-14 overflow-hidden font-semibold text-white transition-all duration-150 ease-in-out hover:bg-mint group">
+                            <span className="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white">Browse as guest</span>
+                        </Link>
                     </div>
                 </div>
             </div>
