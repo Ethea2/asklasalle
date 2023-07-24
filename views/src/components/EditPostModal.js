@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const EditPostModal = ({show, onClose, data}) => {
+const EditPostModal = ({close, show, onClose, data}) => {
 
     const [title, setTitle] = useState('')
     const [body, setBody] = useState('')
@@ -57,8 +57,9 @@ const EditPostModal = ({show, onClose, data}) => {
                         {error && <div className="error">
                             {error}
                         </div>}
-                        <div className="modal-footer px-10 py-6 border-b border-l border-r border-black rounded-b-2xl">
+                        <div className="modal-footer mt-8 rounded-b-2xl flex justify-between">
                             <button onClick={handleSave} className="bg-mint text-white px-4 py-2 rounded-lg">Save changes</button>
+                            <button onClick={close} class="px-4 py-2 bg-red-400 text-white rounded-lg">Cancel</button>
                         </div>
                     </div>
                 </div>

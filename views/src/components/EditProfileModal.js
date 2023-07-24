@@ -67,7 +67,7 @@ const EditProfileModal = ({close, onClose, show, data}) => {
                             </div>}
                             <div className="modal-footer" class="mt-10 w-full flex justify-between">
                                 <button onClick={handleSubmit} class="px-4 py-2 bg-mint text-white rounded-lg">Save changes</button>
-                                <button onClick={close} class="px-4 py-2 bg-green-200 text-white rounded-lg">Cancel</button>
+                                <button onClick={close} class="px-4 py-2 bg-red-400 text-white rounded-lg">Cancel</button>
                             </div>
                     </div>
                 </div>

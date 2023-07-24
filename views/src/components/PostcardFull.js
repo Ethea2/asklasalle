@@ -5,12 +5,14 @@ import Sharemodal from "./Sharemodal";
 import useFetchSimpleUser from "../hooks/useFetchSimpleUser";
 import EditPostModal from "./EditPostModal";
 import useFetch from "../hooks/useFetch"
+import { useNavigate } from "react-router-dom";
 
 const PostcardFull = ({ post }) => {
     const [share, setShare] = useState(false)
     const [saved, setSaved] = useState(false)
     const user = useFetchSimpleUser('/api/user/' + post.username)
     const { postid } = useParams()
+    const navigate = useNavigate()
     const { data, isLoading, errorLoading } = useFetch('/api/askposts/' + postid)
     const save = () => {
 
@@ -32,6 +34,19 @@ const PostcardFull = ({ post }) => {
     }
 
     const [show, setShow] = useState(false)
+
+    const handleClick = async () => {
+        const response = await fetch('/api/askposts/' + post._id, {
+            method: 'DELETE'
+        })
+
+        const json = await response.json()
+
+        if(response.ok){
+            window.location.reload(false)
+            navigate(-1)
+        }
+    }
 
     return (
         <>
@@ -59,18 +74,26 @@ const PostcardFull = ({ post }) => {
                                 </p>
                             </div>
                         </div>
+                        
                         {errorLoading && <div>{errorLoading}</div>}
+                        
                         {isLoading && <div>loading...</div>}
-                        {data &&
-                            <div className="edit-post">
-                                <button onClick={() => setShow(true)}>Edit</button>
-                                {show && <EditPostModal close={() => setShow(false)} onClose={() => {
-                                    setShow(false)
-                                    window.location.reload(false)
-                                    }} show={show} data={data}/>}
-                                    
+                        
+                        <div class="w-1/5 flex justify-end gap-4">
+                            {data &&
+                                <div className="edit-post">
+                                    <button onClick={() => setShow(true)}>Edit</button>
+                                    {show && <EditPostModal close={() => setShow(false)} onClose={() => {
+                                        setShow(false)
+                                        window.location.reload(false)
+                                        }} show={show} data={data}/>}  
+                                </div>
+                            }
+
+                            <div className="delete-post">
+                                <button onClick={handleClick}>Delete</button>
                             </div>
-                        }
+                        </div>
                     </div>
 
                     <hr class="bg-neutral-500 m-2 mt-0.5 h-0.5"></hr>
