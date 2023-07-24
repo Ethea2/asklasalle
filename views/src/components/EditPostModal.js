@@ -52,7 +52,7 @@ const EditPostModal = ({ close, show, onClose, data }) => {
                         </div>
                         <div className="edit-bio flex flex-col gap-0.5 mt-2">
                             <label htmlFor="bio">Body</label>
-                            <textarea type="text" required className="resize-none border border-neutral-500 rounded-lg w-full h-52 p-2" onChange={(e) => setBody(e.target.value)} value={data.body} />
+                            <textarea type="text" required className="resize-none w-full h-52 p-2 border border-neutral-500 rounded-lg" onChange={(e) => setBody(e.target.value)} value={data.body} />
                         </div>
                         {error && <div className="error">
                             {error}

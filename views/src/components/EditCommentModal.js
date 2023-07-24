@@ -47,7 +47,7 @@ const EditCommentModal = ({close, onClose, show, data, postid}) => {
                 <div className="modal-body" class="px-10 py-8 border-l border-r border-black">
                     <div className="edit-body" class="flex flex-col gap-0.5 mt-2">
                         <label htmlFor="body">Your reply:</label>
-                        <textarea type="text" required="" class="border border-neutral-500 rounded-lg" onChange={(e) => setBody(e.target.value)} value={body}/>
+                        <textarea type="text" required="" class="resize-none w-full h-52 p-2 border border-neutral-500 rounded-lg" onChange={(e) => setBody(e.target.value)} value={data.body}/>
                     </div>
                     
                     {error && <div className="error">
@@ -56,7 +56,7 @@ const EditCommentModal = ({close, onClose, show, data, postid}) => {
                     
                     <div className="modal-footer" class="mt-10 w-full flex justify-between">
                         <button onClick={handleSubmit} class="px-4 py-2 bg-mint text-white rounded-lg">Save changes</button>
-                        <button onClick={close} class="px-4 py-2 bg-red-400 text-white rounded-lg">Cancel</button>
+                        <button onClick={close} class="px-4 py-2 bg-red-400 text-white rounded-lg">Cancel</button>  
                     </div>
                 </div>
             </div>
