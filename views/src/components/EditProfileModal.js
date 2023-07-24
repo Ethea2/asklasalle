@@ -55,12 +55,12 @@ const EditProfileModal = ({close, onClose, show, data}) => {
                     <div className="modal-body" class="px-10 py-8 border-l border-r border-black">
                             <div className="edit-displayName" class="flex flex-col gap-0.5 mb-2">
                                 <label htmlFor="displayName">Display Name</label>
-                                <input type="text" required="" class="border border-neutral-500 rounded-lg" onChange={(e) => setDisplayName(e.target.value)} value={displayName}/>
+                                <input type="text" required="" class="border border-neutral-500 rounded-lg" onChange={(e) => setDisplayName(e.target.value)} value={data[0].displayName}/>
                             </div>
 
                             <div className="edit-bio" class="flex flex-col gap-0.5 mt-2">
                                 <label htmlFor="bio">Bio</label>
-                                <input type="text" required="" class="border border-neutral-500 rounded-lg" onChange={(e) => setBio(e.target.value)} value={bio}/>
+                                <input type="text" required="" class="border border-neutral-500 rounded-lg" onChange={(e) => setBio(e.target.value)} value={data[0].bio}/>
                             </div>
                             {error && <div className="error">
                                 {error}

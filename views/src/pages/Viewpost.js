@@ -25,7 +25,6 @@ const Viewpost = () => {
             {data &&
                 <div className="post" class="w-3/5 m-auto mt-12">
                     <PostcardFull post={data} key={data._id}></PostcardFull>
-                    <Link to={'/viewpost/' + postid + '/edit'}>View post as user</Link>
                 </div>
 
 

@@ -8,7 +8,11 @@ const { get_posts,
     get_posts_user,
     delete_comment,
     edit_comment,
-    search_post } = require('../controllers/postControllers')
+    search_post, 
+    upvote,
+    downvote,
+    upvote_comment,
+    downvote_comment} = require('../controllers/postControllers')
 
 const postRouter = express.Router();
 
@@ -45,5 +49,16 @@ postRouter.delete('/:postId/comment/:commentId', delete_comment)
 //EDIT comment
 postRouter.patch('/:id/comment/:commentId', edit_comment)
 
+//UPVOTE
+postRouter.patch('/:id/upvote', upvote)
+
+//DOWNVOTE
+postRouter.patch('/:id/downvote', downvote)
+
+//UPVOTE comment
+postRouter.patch('/:id/comment/:commentId/upvote', upvote_comment)
+
+//DOWNVOTE comment
+postRouter.patch('/:id/comment/:commentId/downvote', downvote_comment)
 
 module.exports = postRouter

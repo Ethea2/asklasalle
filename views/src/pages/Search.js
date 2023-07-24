@@ -3,15 +3,10 @@ import Navbar from "../components/Navbar";
 import Postcard from "../components/Postcard";
 import Sidebar from "../components/Sidebar";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
 
 const Search = () => {
     const { keywords } = useParams()
     const { data, isLoading, errorLoading } = useFetch('/api/askposts/search?keywords=' + keywords)
-
-    useEffect(() => {
-        console.log(keywords)
-    })
 
     return (
         <>

@@ -3,12 +3,39 @@ import { Link } from "react-router-dom"
 import { toast } from 'react-toastify';
 import Sharemodal from "./Sharemodal";
 import EditCommentModal from "./EditCommentModal";
+import axios from 'axios'
 
 const Comments = ({ comment, postid }) => {
     const [saved, setSaved] = useState(false)
     const [share, setShare] = useState(false)
     const [show, setShow] = useState(false)
-    
+    const [upvote, setUpvote] = useState(false)
+    const [downvote, setDownvote] = useState(false)
+    const [upVoteNumber, setUpvoteNumber] = useState(comment.upVote)
+    const [downVoteNumber, setDownVoteNumber] = useState(comment.downVote)
+
+    const handleUpvote = () => {
+        if (upvote === false) {
+            setUpvote(true)
+            setDownvote(false)
+            setUpvoteNumber(upVoteNumber + 1)
+            axios.patch(`/api/askposts/${postid}/comment/${comment._id}/upvote`)
+        } else {
+            toast("😔 Sorry you already upvoted it!")
+        }
+    }
+
+    const handleDownvote = () => {
+        if (downvote === false) {
+            setDownvote(true)
+            setUpvote(false)
+            setDownVoteNumber(downVoteNumber + 1)
+            axios.patch(`/api/askposts/${postid}/comment/${comment._id}/downvote`)
+        } else {
+            toast("😔 Sorry you already downvoted it!")
+        }
+    }
+
     const save = () => {
 
         if (saved) {
@@ -35,7 +62,7 @@ const Comments = ({ comment, postid }) => {
 
         const json = await response.json()
 
-        if(response.ok){
+        if (response.ok) {
             window.location.reload(false)
         }
     }
@@ -46,15 +73,15 @@ const Comments = ({ comment, postid }) => {
                 <div className="main-content" class="w-full py-2 px-4">
 
                     <div className="comment-header" class="flex justify-between p-2">
-                        <p><Link to={'/viewprofile/' + comment.username }><span class="font-bold text-d-lasalle">@{comment.username}</span> </Link>replied...</p>
-                        
+                        <p><Link to={'/viewprofile/' + comment.username}><span class="font-bold text-d-lasalle">@{comment.username}</span> </Link>replied...</p>
+
                         <div className="edit-delete" class="flex gap-4">
-                            <button onClick={() => {setShow(true)}}>Edit</button>
+                            <button onClick={() => { setShow(true) }}>Edit</button>
                             {
                                 show &&
-                                <EditCommentModal close={() => {setShow(false)}} onClose={() => {
-                                        setShow(false)
-                                        window.location.reload(false)   
+                                <EditCommentModal close={() => { setShow(false) }} onClose={() => {
+                                    setShow(false)
+                                    window.location.reload(false)
                                 }} show={show} data={comment} postid={postid} />
                             }
                             <button onClick={handleClick}>Delete</button>
@@ -70,29 +97,30 @@ const Comments = ({ comment, postid }) => {
 
                         <div className="votes-replies" class="flex gap-12">
                             <div className="votes" class="flex justify-between gap-4">
-                                <div className="upvotes">
+                                <div className="upvotes" class="cursor-pointer" onClick={handleUpvote}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="bg-inherit" width="20px" height="20px" viewBox="0 0 512 512" version="1.1">
                                         <title>triangle-filled</title>
                                         <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                            <g id="drop" fill="#000000" transform="translate(32.000000, 42.666667)">
+                                            <g id="drop" fill={upvote ? "#3abd73" : "#000000"} transform="translate(32.000000, 42.666667)">
                                                 <path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z" id="Combined-Shape">
                                                 </path>
                                             </g>
                                         </g>
                                     </svg>
                                 </div>
-
-                                <div className="downvotes">
+                                {upVoteNumber}
+                                <div className="downvotes" class="cursor-pointer" onClick={handleDownvote}>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="bg-inherit" width="20px" height="20px" viewBox="0 0 512 512" version="1.1" class="rotate-180">
                                         <title>triangle-filled</title>
                                         <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                            <g id="drop" fill="#000000" transform="translate(32.000000, 42.666667)">
+                                            <g id="drop" fill={downvote ? "#bd3a3a" : "#000000"} transform="translate(32.000000, 42.666667)">
                                                 <path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z" id="Combined-Shape">
                                                 </path>
                                             </g>
                                         </g>
                                     </svg>
                                 </div>
+                                {downVoteNumber}
                             </div>
 
                             <div className="comments" class="flex gap-2">
@@ -126,7 +154,7 @@ const Comments = ({ comment, postid }) => {
             </div>
             {
                 share &&
-                <Sharemodal shareUse={shareUse}/>
+                <Sharemodal shareUse={shareUse} />
             }
         </>
     )

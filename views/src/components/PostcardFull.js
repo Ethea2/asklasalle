@@ -1,4 +1,4 @@
-import { useParams,Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useState } from 'react'
 import { toast } from "react-toastify";
 import Sharemodal from "./Sharemodal";
@@ -6,6 +6,7 @@ import useFetchSimpleUser from "../hooks/useFetchSimpleUser";
 import EditPostModal from "./EditPostModal";
 import useFetch from "../hooks/useFetch"
 import { useNavigate } from "react-router-dom";
+import axios from "axios"
 
 const PostcardFull = ({ post }) => {
     const [share, setShare] = useState(false)
@@ -13,7 +14,34 @@ const PostcardFull = ({ post }) => {
     const user = useFetchSimpleUser('/api/user/' + post.username)
     const { postid } = useParams()
     const navigate = useNavigate()
-    const { data, isLoading, errorLoading } = useFetch('/api/askposts/' + postid)
+
+    const [upvote, setUpvote] = useState(false)
+    const [downvote, setDownvote] = useState(false)
+    const [upVoteNumber, setUpvoteNumber] = useState(post.upVote)
+    const [downVoteNumber, setDownVoteNumber] = useState(post.downVote)
+
+    const handleUpvote = () => {
+        if (upvote === false) {
+            setUpvote(true)
+            setDownvote(false)
+            setUpvoteNumber(upVoteNumber + 1)
+            axios.patch(`/api/askposts/${post._id}/upvote`)
+        } else {
+            toast("😔 Sorry you already upvoted it!")
+        }
+    }
+
+    const handleDownvote = () => {
+        if (downvote === false) {
+            setDownvote(true)
+            setUpvote(false)
+            setDownVoteNumber(downVoteNumber + 1)
+            axios.patch(`/api/askposts/${post._id}/downvote`)
+        } else {
+            toast("😔 Sorry you already downvoted it!")
+        }
+    }
+
     const save = () => {
 
         if (saved) {
@@ -42,7 +70,7 @@ const PostcardFull = ({ post }) => {
 
         const json = await response.json()
 
-        if(response.ok){
+        if (response.ok) {
             window.location.reload(false)
             navigate(-1)
         }
@@ -74,19 +102,14 @@ const PostcardFull = ({ post }) => {
                                 </p>
                             </div>
                         </div>
-                        
-                        {errorLoading && <div>{errorLoading}</div>}
-                        
-                        {isLoading && <div>loading...</div>}
-                        
                         <div class="w-1/5 flex justify-end gap-4">
-                            {data &&
+                            {post &&
                                 <div className="edit-post">
                                     <button onClick={() => setShow(true)}>Edit</button>
                                     {show && <EditPostModal close={() => setShow(false)} onClose={() => {
                                         setShow(false)
                                         window.location.reload(false)
-                                        }} show={show} data={data}/>}  
+                                    }} show={show} data={post} />}
                                 </div>
                             }
 
@@ -111,31 +134,31 @@ const PostcardFull = ({ post }) => {
 
                             <div className="votes-replies" class="flex gap-12">
                                 <div className="votes" class="flex justify-between gap-4">
-                                    <div className="upvotes">
+                                    <div className="upvotes" class="cursor-pointer" onClick={handleUpvote}>
                                         <svg xmlns="http://www.w3.org/2000/svg" className="bg-inherit" width="20px" height="20px" viewBox="0 0 512 512" version="1.1">
                                             <title>triangle-filled</title>
                                             <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <g id="drop" fill="#000000" transform="translate(32.000000, 42.666667)">
+                                                <g id="drop" fill={upvote ? "#3abd73" : "#000000"} transform="translate(32.000000, 42.666667)">
                                                     <path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z" id="Combined-Shape">
                                                     </path>
                                                 </g>
                                             </g>
                                         </svg>
                                     </div>
-
-                                    <div className="downvotes">
+                                    {upVoteNumber}
+                                    <div className="downvotes" class="cursor-pointer" onClick={handleDownvote}>
                                         <svg xmlns="http://www.w3.org/2000/svg" className="bg-inherit" width="20px" height="20px" viewBox="0 0 512 512" version="1.1" class="rotate-180">
                                             <title>triangle-filled</title>
                                             <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <g id="drop" fill="#000000" transform="translate(32.000000, 42.666667)">
+                                                <g id="drop" fill={downvote ? "#bd3a3a" : "#000000"} transform="translate(32.000000, 42.666667)">
                                                     <path d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z" id="Combined-Shape">
                                                     </path>
                                                 </g>
                                             </g>
                                         </svg>
                                     </div>
+                                    {downVoteNumber}
                                 </div>
-
                                 <div className="comments" class="flex gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="my-auto"><path d="M13,11H7a1,1,0,0,0,0,2h6a1,1,0,0,0,0-2Zm4-4H7A1,1,0,0,0,7,9H17a1,1,0,0,0,0-2Zm2-5H5A3,3,0,0,0,2,5V15a3,3,0,0,0,3,3H16.59l3.7,3.71A1,1,0,0,0,21,22a.84.84,0,0,0,.38-.08A1,1,0,0,0,22,21V5A3,3,0,0,0,19,2Zm1,16.59-2.29-2.3A1,1,0,0,0,17,16H5a1,1,0,0,1-1-1V5A1,1,0,0,1,5,4H19a1,1,0,0,1,1,1Z" /></svg>
                                     <p class="">{post.replies.length}</p>

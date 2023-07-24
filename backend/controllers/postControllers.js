@@ -75,6 +75,46 @@ const edit_post = async (req, res) => {
     res.status(200).json(post)
 }
 
+//UPDATE upvote
+const upvote = async (req, res) => {
+    const { id } = req.params
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'This post does not exist' })
+    }
+    try {
+        const post = await Post.findById(id)
+
+        post.upVote = post.upVote + 1
+
+        await post.save()
+
+        res.status(200).json(post)
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+}
+
+//UPDATE downvote
+const downvote = async (req, res) => {
+    const { id } = req.params
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'This post does not exist' })
+    }
+    try {
+        const post = await Post.findById(id)
+
+        post.downVote = post.downVote + 1
+
+        await post.save()
+
+        res.status(200).json(post)
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+}
+
 //POST a comment
 const post_comment = async (req, res) => {
     const { id } = req.params;
@@ -210,6 +250,64 @@ const edit_comment = async (req, res) => {
     }
 };
 
+//UPVOTE comment
+const upvote_comment = async (req, res) => {
+    const { commentId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+        return res.status(404).json({ error: 'Invalid comment ID' });
+    }
+
+    try {
+        // Find the comment by its ID
+        const comment = await Comment.findById(commentId);
+
+        if (!comment) {
+            return res.status(404).json({ error: 'Comment not found' });
+        }
+
+        // Update the 'body' property of the comment
+        comment.upVote = comment.upVote + 1
+
+        // Save the updated comment
+        await comment.save();
+
+        res.status(200).json(comment);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+//DOWNVOTE comment
+const downvote_comment = async (req, res) => {
+    const { commentId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+        return res.status(404).json({ error: 'Invalid comment ID' });
+    }
+
+    try {
+        // Find the comment by its ID
+        const comment = await Comment.findById(commentId);
+
+        if (!comment) {
+            return res.status(404).json({ error: 'Comment not found' });
+        }
+
+        // Update the 'body' property of the comment
+        comment.downVote = comment.downVote + 1
+
+        // Save the updated comment
+        await comment.save();
+
+        res.status(200).json(comment);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
 const search_post = async (req, res) => {
     const { keywords } = req.query;
 
@@ -254,5 +352,9 @@ module.exports = {
     get_comments,
     delete_comment,
     edit_comment,
-    search_post
+    search_post,
+    upvote,
+    downvote,
+    upvote_comment,
+    downvote_comment
 }

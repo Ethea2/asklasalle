@@ -1,19 +1,19 @@
 import { useState } from "react"
 
-const EditPostModal = ({close, show, onClose, data}) => {
+const EditPostModal = ({ close, show, onClose, data }) => {
 
     const [title, setTitle] = useState('')
     const [body, setBody] = useState('')
     const [error, setError] = useState(null)
-    
-    if(!show){
+
+    if (!show) {
         return null
     }
 
     const handleSave = async (e) => {
         e.preventDefault()
 
-        const post = {title, body}
+        const post = { title, body }
 
         console.log('/api/askposts/' + data._id)
         const response = await fetch('/api/askposts/' + data._id, {
@@ -25,11 +25,11 @@ const EditPostModal = ({close, show, onClose, data}) => {
         })
         const json = await response.json()
 
-        if(!response.ok){
+        if (!response.ok) {
             setError(json.error)
         }
 
-        if(response.ok){
+        if (response.ok) {
             setTitle('')
             setBody('')
             setError(null)
@@ -48,11 +48,11 @@ const EditPostModal = ({close, show, onClose, data}) => {
                     <div className="modal-body px-10 py-8 border-l border-r border-black">
                         <div className="edit-displayName flex flex-col gap-0.5 mb-2">
                             <label htmlFor="displayName">Title</label>
-                            <input type="text" required className="border border-neutral-500 rounded-lg" onChange={(e) => setTitle(e.target.value)} value={title}/>
+                            <input type="text" required className="border border-neutral-500 rounded-lg" onChange={(e) => setTitle(e.target.value)} value={data.title} />
                         </div>
                         <div className="edit-bio flex flex-col gap-0.5 mt-2">
                             <label htmlFor="bio">Body</label>
-                            <input type="text" required className="border border-neutral-500 rounded-lg" onChange={(e) => setBody(e.target.value)} value={body}/>
+                            <textarea type="text" required className="resize-none border border-neutral-500 rounded-lg w-full h-52 p-2" onChange={(e) => setBody(e.target.value)} value={data.body} />
                         </div>
                         {error && <div className="error">
                             {error}
@@ -67,5 +67,5 @@ const EditPostModal = ({close, show, onClose, data}) => {
         </form>
     )
 }
- 
+
 export default EditPostModal;
