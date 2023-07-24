@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const commentsSchema = new Schema({
     username: {
         type: String,
-        required: true
+        default: 'anon_user'
     },
     body: {
         type: String,

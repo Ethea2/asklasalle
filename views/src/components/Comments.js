@@ -2,11 +2,13 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import { toast } from 'react-toastify';
 import Sharemodal from "./Sharemodal";
+import { useNavigate } from "react-router-dom";
 
 const Comments = ({ comment }) => {
     const [saved, setSaved] = useState(false)
     const [share, setShare] = useState(false)
-
+    const navigate = useNavigate()
+    
     const save = () => {
 
         if (saved) {
@@ -25,11 +27,33 @@ const Comments = ({ comment }) => {
         }
     }
 
+    const handleClick = async () => {
+        const response = await fetch('/api/askposts/' + comment, {
+            method: 'DELETE'
+        })
+
+        const json = await response.json()
+
+        if(response.ok){
+            window.location.reload(false)
+            navigate(-1)
+        }
+    }
+
     return (
         <>
             <div className="comment" class="mb-4 bg-light-blue-gray border border-dark-navy rounded-2xl flex">
                 <div className="main-content" class="w-full py-2 px-4">
-                    <p class="p-2"><Link to={'/viewprofile/' + comment.username }><span class="font-bold text-d-lasalle">@{comment.username  }</span> </Link>replied...</p>
+
+                    <div className="comment-header" class="flex justify-between p-2">
+                        <p><Link to={'/viewprofile/' + comment.username }><span class="font-bold text-d-lasalle">@{comment.username}</span> </Link>replied...</p>
+                        
+                        <div className="edit-delete" class="flex gap-4">
+                            <button>Edit</button>
+                            <button onClick={handleClick}>Delete</button>
+                        </div>
+
+                    </div>
 
                     <hr class="bg-neutral-400 h-0.5 mx-2"></hr>
 
