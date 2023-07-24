@@ -24,7 +24,7 @@ const Viewpost = () => {
             {isLoading && <div>loading...</div>}
             {data &&
                 <div className="post" class="w-3/5 m-auto mt-12">
-                    <PostcardFull post={data} key={data.postid}></PostcardFull>
+                    <PostcardFull post={data} key={data._id}></PostcardFull>
                     <Link to={'/viewpost/' + postid + '/edit'}>View post as user</Link>
                 </div>
 
@@ -47,7 +47,7 @@ const Viewpost = () => {
 
                     {comments && comments.map((comment) => {
                         return (
-                            <Comments comment={comment} />
+                            <Comments comment={comment} postid={postid} />
                         )
                     })
                     }

@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-const EditCommentModal = ({close, onClose, show, data}) => {
+const EditCommentModal = ({close, onClose, show, data, postid}) => {
 
-    const [body,setBody] = useState('')
+    const [body, setBody] = useState('')
     const [error, setError] = useState(null)
 
     if(!show){
@@ -12,11 +12,11 @@ const EditCommentModal = ({close, onClose, show, data}) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const profile = {body}
+        const commentBody = {body}
 
-        const response = await fetch('/api/askposts/' + data, {
+        const response = await fetch('/api/askposts/' + postid + "/comment/" + data._id, {
             method: 'PATCH',
-            body: JSON.stringify(profile),
+            body: JSON.stringify(commentBody),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -28,8 +28,7 @@ const EditCommentModal = ({close, onClose, show, data}) => {
         }
 
         if(response.ok){
-            setDisplayName('')
-            setBio('')
+            setBody('')
             setError(null)
             onClose()
             console.log('user profile updated successfully!')

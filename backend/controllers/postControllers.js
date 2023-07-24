@@ -147,49 +147,68 @@ const get_comments = async (req, res) => {
     }
 };
 
-const delete_comment = async (req, res) => { 
-    const { postId, commentId } = req.params; 
- 
-    if (!mongoose.Types.ObjectId.isValid(postId) || !mongoose.Types.ObjectId.isValid(commentId)) { 
-        return res.status(404).json({ error: 'Invalid post or comment ID' }); 
-    } 
- 
-    try { 
-        // Find the post by its ID 
-        const post = await Post.findById(postId); 
- 
-        if (!post) { 
-            return res.status(404).json({ error: 'Post not found' }); 
-        } 
- 
-        // Find the comment by its ID 
-        const comment = await Comment.findById(commentId); 
- 
-        if (!comment) { 
-            return res.status(404).json({ error: 'Comment not found' }); 
-        } 
- 
-        // Check if the comment is associated with the post 
-        if (!post.replies.includes(comment._id)) { 
-            return res.status(404).json({ error: 'Comment does not belong to the post' }); 
-        } 
- 
-        // Delete the comment from the database 
-        await comment.remove(); 
- 
-        // Remove the comment's ObjectId from the post's replies array 
-        post.replies = post.replies.filter(replyId => !replyId.equals(comment._id)); 
- 
-        // Save the updated post 
-        await post.save(); 
- 
-        res.status(200).json({ message: 'Comment deleted successfully' }); 
-    } catch (err) { 
-        console.error(err); 
-        res.status(500).json({ error: 'Server error' }); 
-    } 
+//DELETE comment
+const delete_comment = async (req, res) => {
+    const { postId, commentId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(postId) || !mongoose.Types.ObjectId.isValid(commentId)) {
+        return res.status(404).json({ error: 'Invalid post or comment ID' });
+    }
+
+    try {
+        // Find the post by its ID
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found' });
+        }
+
+        // Check if the commentId is in the replies array of the post
+        if (!post.replies.includes(commentId)) {
+            return res.status(404).json({ error: 'Comment not found for this post' });
+        }
+
+        // Filter out the commentId from the replies array of the post
+        post.replies = post.replies.filter(replyId => !replyId.equals(commentId));
+
+        // Save the updated post without the deleted commentId
+        await post.save();
+
+        res.status(200).json({ message: 'Comment deleted successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
 };
 
+//EDIT comment
+const edit_comment = async (req, res) => {
+    const { commentId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(commentId)) {
+        return res.status(404).json({ error: 'Invalid comment ID' });
+    }
+
+    try {
+        // Find the comment by its ID
+        const comment = await Comment.findById(commentId);
+
+        if (!comment) {
+            return res.status(404).json({ error: 'Comment not found' });
+        }
+
+        // Update the 'body' property of the comment
+        comment.body = req.body.body || comment.body;
+
+        // Save the updated comment
+        await comment.save();
+
+        res.status(200).json(comment);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
 
 module.exports = {
     get_posts,
@@ -200,5 +219,6 @@ module.exports = {
     edit_post,
     post_comment,
     get_comments,
-    delete_comment
+    delete_comment,
+    edit_comment
 }

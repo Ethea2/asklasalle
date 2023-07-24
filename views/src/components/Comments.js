@@ -2,12 +2,12 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import { toast } from 'react-toastify';
 import Sharemodal from "./Sharemodal";
-import { useNavigate } from "react-router-dom";
+import EditCommentModal from "./EditCommentModal";
 
-const Comments = ({ comment }) => {
+const Comments = ({ comment, postid }) => {
     const [saved, setSaved] = useState(false)
     const [share, setShare] = useState(false)
-    const navigate = useNavigate()
+    const [show, setShow] = useState(false)
     
     const save = () => {
 
@@ -28,7 +28,8 @@ const Comments = ({ comment }) => {
     }
 
     const handleClick = async () => {
-        const response = await fetch('/api/askposts/' + comment, {
+        console.log(comment)
+        const response = await fetch('/api/askposts/' + postid + "/comment/" + comment._id, {
             method: 'DELETE'
         })
 
@@ -36,7 +37,6 @@ const Comments = ({ comment }) => {
 
         if(response.ok){
             window.location.reload(false)
-            navigate(-1)
         }
     }
 
@@ -49,7 +49,14 @@ const Comments = ({ comment }) => {
                         <p><Link to={'/viewprofile/' + comment.username }><span class="font-bold text-d-lasalle">@{comment.username}</span> </Link>replied...</p>
                         
                         <div className="edit-delete" class="flex gap-4">
-                            <button>Edit</button>
+                            <button onClick={() => {setShow(true)}}>Edit</button>
+                            {
+                                show &&
+                                <EditCommentModal close={() => {setShow(false)}} onClose={() => {
+                                        setShow(false)
+                                        window.location.reload(false)   
+                                }} show={show} data={comment} postid={postid} />
+                            }
                             <button onClick={handleClick}>Delete</button>
                         </div>
 
