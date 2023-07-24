@@ -5,6 +5,7 @@ import PostcardFull from "../components/PostcardFull";
 import Navbar from "../components/Navbar";
 import Comments from "../components/Comments"
 import useFetchSimpleUser from "../hooks/useFetchSimpleUser";
+import AddComment from "../components/AddComment";
 
 const Viewpost = () => {
     const { postid } = useParams()
@@ -37,6 +38,8 @@ const Viewpost = () => {
                 </div>
 
                 <hr class="bg-stone-500 h-0.5 mx-4"></hr>
+
+                <AddComment/>
 
                 <div className="comment-container" class="w-full mt-6 p-4">
 
