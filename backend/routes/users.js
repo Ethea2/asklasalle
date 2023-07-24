@@ -26,5 +26,3 @@ userRouter.post('/:id/picture', edit_user_picture)
 
 
 module.exports = userRouter
-
-//test
