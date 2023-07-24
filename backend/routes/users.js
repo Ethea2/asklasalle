@@ -2,7 +2,8 @@ const express = require('express')
 const { get_users,
     get_singleUser,
     create_user,
-    edit_userInfo } = require('../controllers/userController')
+    edit_userInfo, 
+    edit_user_picture} = require('../controllers/userController')
 
 const userRouter = express.Router();
 
@@ -19,5 +20,9 @@ userRouter.post('/', create_user)
 
 // UPDATE user info
 userRouter.patch('/:id', edit_userInfo)
+
+// UPDATE user picture
+userRouter.post('/:id/picture', edit_user_picture)
+
 
 module.exports = userRouter

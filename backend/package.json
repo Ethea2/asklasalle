@@ -14,8 +14,11 @@
   "dependencies": {
     "@sefinek/random-animals": "^1.0.5",
     "axios": "^1.4.0",
+    "body-parser": "^1.20.2",
+    "cloudinary": "^1.38.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
     "mongodb": "^5.7.0",
     "mongoose": "^7.3.4",
     "unique-names-generator": "^4.7.1"
