@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from './useAuthContext'
 
 export const useSignup = () => {
-    const [error, setError] = useState(null)
+    const [iserror, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(null)
     const { dispatch } = useAuthContext()
+    const navigate = useNavigate()
 
     const signup = async (email, password, username) => {
         setIsLoading(true)
@@ -31,9 +33,12 @@ export const useSignup = () => {
         // update loading state
         setIsLoading(false)
 
+        //navigate to userpage
+        navigate('/viewprofile/' + username)
+
         
         }
     }
 
-    return { signup, isLoading, error }
+    return { signup, isLoading, iserror }
 }
