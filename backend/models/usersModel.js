@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { uniqueNamesGenerator, colors, animals } = require('unique-names-generator');
 //import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator';
 const bcrypt = require('bcrypt')
 const validator = require('validator')
@@ -32,12 +33,20 @@ const usersSchema = new Schema({
     },
     img: {
         type: String,
-        required: false
+        required: true
     }
 }, { timestamps: true })
 
 // static signup method
 usersSchema.statics.signup = async function(email, password, username) {
+    //default img and displayname
+    const displayName = uniqueNamesGenerator({
+        dictionaries: [colors, animals],
+        separator: " ",
+        style: "capital"
+    });
+
+    const img = `https://picsum.photos/200?random=${Math.random()}`
 
     // validation
     if(!email || !password) {
@@ -56,7 +65,7 @@ usersSchema.statics.signup = async function(email, password, username) {
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
 
-    const user = await this.create({ email, password: hash, username })
+    const user = await this.create({ email, password: hash, username, displayName: displayName, img: img })
 
     return user
 }

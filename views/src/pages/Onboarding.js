@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 
 const Onboarding = () => {
+
+    
     return (
         <>
             <div className="header-container" class="w-2/4 m-auto mt-4 p-8 bg-dark-navy border-4 border-teal rounded-2xl">
