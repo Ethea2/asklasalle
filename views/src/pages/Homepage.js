@@ -2,9 +2,28 @@ import useFetch from "../hooks/useFetch"
 import Navbar from "../components/Navbar";
 import Postcard from "../components/Postcard";
 import Sidebar from "../components/Sidebar";
+import { useState } from "react";
 // import { Link } from 'react-router-dom'
 
 const Homepage = () => {
+    const [upvotes, setUpvotes] = useState(false)
+    const [comments, setComments] = useState(false)
+
+    const useUpvote = () => {
+        setComments(false)
+        setUpvotes(true)
+    }
+
+    const useComments = () => {
+        setUpvotes(false)
+        setComments(true)
+    }
+
+    const reset = () => {
+        setUpvotes(false)
+        setComments(false)
+    }
+
     const { data, isLoading, errorLoading } = useFetch('/api/askposts/')
     return (
         <>
@@ -14,7 +33,7 @@ const Homepage = () => {
 
             <div className="homepage flex">
                 <div className="w-80 m-14">
-                    <Sidebar />
+                    <Sidebar useUpvote={useUpvote} useComments={useComments} reset={reset} />
                 </div>
                 <div className="flex-col w-2/3 mt-14 mr-14">
                     {errorLoading && <div>{errorLoading}</div>}
@@ -29,13 +48,38 @@ const Homepage = () => {
                             </div>
                         </div>
                     }
-                    {data &&
+
+
+                    {
+                        (data && upvotes) &&
+                        data.sort((a, b) => {
+                            return b.upVote - a.upVote
+                        }).map((post) => {
+                            return (
+                                <Postcard post={post} key={post._id} ></Postcard>
+                            )
+                        })
+                    }
+
+                    {
+                        (data && comments) &&
+                        data.sort((a, b) => {
+                            return b.replies.length - a.replies.length
+                        }).map((post) => {
+                            return (
+                                <Postcard post={post} key={post._id} ></Postcard>
+                            )
+                        })
+                    }
+
+                    {((data && !upvotes) && (data && !comments)) &&
                         data.map((post) => {
                             return (
                                 <Postcard post={post} key={post._id} ></Postcard>
                             )
                         })
                     }
+
                 </div>
             </div>
         </>
