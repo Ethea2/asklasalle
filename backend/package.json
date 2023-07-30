@@ -12,12 +12,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "cloudinary": "^1.38.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.0",
+    "jsonwebtoken": "^9.0.1",
     "mongodb": "^5.7.0",
     "mongoose": "^7.3.4",
-    "unique-names-generator": "^4.7.1"
+    "unique-names-generator": "^4.7.1",
+    "validation": "^0.0.1",
+    "validator": "^13.9.0"
   }
 }

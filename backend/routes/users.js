@@ -3,7 +3,8 @@ const { get_users,
     get_singleUser,
     create_user,
     edit_userInfo, 
-    edit_user_picture} = require('../controllers/userController')
+    edit_user_picture,
+    loginUser, signupUser} = require('../controllers/userController')
 
 const userRouter = express.Router();
 
@@ -24,5 +25,10 @@ userRouter.patch('/:id', edit_userInfo)
 // UPDATE user picture
 userRouter.post('/:id/picture', edit_user_picture)
 
+//login route
+userRouter.post('/login', loginUser)
+
+//signup route
+userRouter.post('/signup', signupUser)
 
 module.exports = userRouter
