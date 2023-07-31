@@ -14,7 +14,7 @@ const Navbar = () => {
     const navigate = useNavigate()
     const { user } = useAuthContext()
     const { logout } = useLogout()
-    const userDetails = useFetchSimpleUser(user ? apiUrl + '/api/user/email/' + user.email : '/' + null)
+    const userDetails = useFetchSimpleUser(user ? '/api/user/email/' + user.email : '/' + null)
 
     useEffect(() => {
         if (userDetails) {
