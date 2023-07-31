@@ -11,7 +11,7 @@ const cors = require('cors')
 const app = express()
 
 app.use(cors({
-    origin: ['https://asklasalle.vercel.app/'],
+    origin: ['https://asklasalle-27f8fmxow-ethea2.vercel.app'],
     methods: ["POST", "PATCH", "DELETE", "GET"],
     credentials:true
 }))
