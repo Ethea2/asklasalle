@@ -79,6 +79,7 @@ const edit_user_picture = async (req, res) => {
             width: 200,
             height: 200,
             crop: "scale", 
+            withcredentials:false
         })
 
         const user = await User.findOneAndUpdate({ _id: id }, {
