@@ -11,26 +11,16 @@ const cors = require('cors')
 const app = express()
 app.use(cors())
 app.use(cors({
-    origin: ['https://asklasalle.vercel.app', 'http://localhost:3000'],
+    origin: [],
     methods: ["GET", "POST", "PATCH", "DELETE"],
-    credentials: true
+    credentials:true
 }))
 
 // middleware
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Access-Control-Allow-Credentials", true);
-    res.header("Access-Control-Allow-Origin", "https://asklasalle.vercel.app");
-
-    res.header('Access-Control-Expose-Headers', 'agreementrequired');
-
-    next()
-})
-
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json({limit: '50mb'}));
 //app.use(express.urlencoded({limit: '50mb'}));
 
-app.use(file_upload({ useTempFiles: true }))
+app.use(file_upload({useTempFiles: true}))
 
 app.use((req, res, next) => {
     console.log(req.path, req.method);
