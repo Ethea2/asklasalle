@@ -4,7 +4,7 @@ const { get_users,
     create_user,
     edit_userInfo, 
     edit_user_picture,
-    loginUser, signupUser} = require('../controllers/userController')
+    loginUser, signupUser, fetch_user_by_email} = require('../controllers/userController')
 
 const userRouter = express.Router();
 
@@ -13,6 +13,8 @@ userRouter.get('/', get_users)
 
 // GET single user
 userRouter.get('/:username', get_singleUser)
+
+
 
 // POST [create] new user
 userRouter.post('/', create_user)
@@ -30,5 +32,8 @@ userRouter.post('/login', loginUser)
 
 //signup route
 userRouter.post('/signup', signupUser)
+
+//fetch user by email
+userRouter.get('/email/:email', fetch_user_by_email)
 
 module.exports = userRouter

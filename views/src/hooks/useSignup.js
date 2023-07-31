@@ -35,8 +35,6 @@ export const useSignup = () => {
 
         //navigate to userpage
         navigate('/viewprofile/' + username)
-
-        
         }
     }
 

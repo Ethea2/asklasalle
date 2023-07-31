@@ -2,12 +2,19 @@ import useFetch from "../hooks/useFetch"
 import Navbar from "../components/Navbar";
 import Postcard from "../components/Postcard";
 import Sidebar from "../components/Sidebar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
+import useFetchSimpleUser from "../hooks/useFetchSimpleUser";
 // import { Link } from 'react-router-dom'
 
 const Homepage = () => {
+    const { user } = useAuthContext()
     const [upvotes, setUpvotes] = useState(false)
     const [comments, setComments] = useState(false)
+    const { data, isLoading, errorLoading } = useFetch('/api/askposts/')
+    const loggedUser = useFetchSimpleUser(user ? '/api/user/email/' + user.email : null)
+
 
     const useUpvote = () => {
         setComments(false)
@@ -24,7 +31,6 @@ const Homepage = () => {
         setComments(false)
     }
 
-    const { data, isLoading, errorLoading } = useFetch('/api/askposts/')
     return (
         <>
             <div className="nav" class="sticky top-0 z-50">
@@ -56,7 +62,7 @@ const Homepage = () => {
                             return b.upVote - a.upVote
                         }).map((post) => {
                             return (
-                                <Postcard post={post} key={post._id} ></Postcard>
+                                <Postcard post={post} key={post._id} loggedUser={loggedUser} ></Postcard>
                             )
                         })
                     }
@@ -67,7 +73,7 @@ const Homepage = () => {
                             return b.replies.length - a.replies.length
                         }).map((post) => {
                             return (
-                                <Postcard post={post} key={post._id} ></Postcard>
+                                <Postcard post={post} key={post._id} loggedUser={loggedUser} ></Postcard>
                             )
                         })
                     }
@@ -75,7 +81,7 @@ const Homepage = () => {
                     {((data && !upvotes) && (data && !comments)) &&
                         data.map((post) => {
                             return (
-                                <Postcard post={post} key={post._id} ></Postcard>
+                                <Postcard post={post} key={post._id} loggedUser={loggedUser} ></Postcard>
                             )
                         })
                     }

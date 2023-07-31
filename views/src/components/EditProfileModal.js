@@ -1,11 +1,13 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useAuthContext } from "../hooks/useAuthContext"
 
 const EditProfileModal = ({close, onClose, show, data}) => {
 
-    const [displayName, setDisplayName] = useState('')
-    const [bio, setBio] = useState('')
+    const [displayName, setDisplayName] = useState(data[0].displayName)
+    const [bio, setBio] = useState(data[0].bio)
     const [error, setError] = useState(null)
+    const { user } = useAuthContext()
 
     const navigate = useNavigate();
     
@@ -24,7 +26,8 @@ const EditProfileModal = ({close, onClose, show, data}) => {
             method: 'PATCH',
             body: JSON.stringify(profile),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${user.token}`
             }
         })
         const json = await response.json()
@@ -55,12 +58,12 @@ const EditProfileModal = ({close, onClose, show, data}) => {
                     <div className="modal-body" class="px-10 py-8 border-l border-r border-black">
                             <div className="edit-displayName" class="flex flex-col gap-0.5 mb-2">
                                 <label htmlFor="displayName">Display Name</label>
-                                <input type="text" required="" class="border border-neutral-500 rounded-lg" onChange={(e) => setDisplayName(e.target.value)} value={data[0].displayName}/>
+                                <input type="text" required="" class="border border-neutral-500 rounded-lg" onChange={(e) => setDisplayName(e.target.value)} value={displayName}/>
                             </div>
 
                             <div className="edit-bio" class="flex flex-col gap-0.5 mt-2">
                                 <label htmlFor="bio">Bio</label>
-                                <input type="text" required="" class="border border-neutral-500 rounded-lg" onChange={(e) => setBio(e.target.value)} value={data[0].bio}/>
+                                <input type="text" required="" class="border border-neutral-500 rounded-lg" onChange={(e) => setBio(e.target.value)} value={bio}/>
                             </div>
                             {error && <div className="error">
                                 {error}

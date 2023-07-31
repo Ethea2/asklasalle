@@ -1,15 +1,20 @@
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
+
 
 const Sidebar = ({ useUpvote, useComments, reset }) => {
+    const { user } = useAuthContext()
     return (
 
         <div className="sidebar">
-
-            <div className="new-post">
-                <Link to="/createpost">
-                    <button class="w-full p-4 mb-4 rounded-2xl bg-teal text-white font-bold border-4 border-teal text-center ease-in duration-75 hover:bg-dark-navy">Post something!</button>
-                </Link>
-            </div>
+            {
+                user &&
+                <div className="new-post">
+                    <Link to="/createpost">
+                        <button class="w-full p-4 mb-4 rounded-2xl bg-teal text-white font-bold border-4 border-teal text-center ease-in duration-75 hover:bg-dark-navy">Post something!</button>
+                    </Link>
+                </div>
+            }
 
             <div className="organize" class="w-full bg-light-blue-gray rounded-2xl">
                 <div className="heading" class="border-2 border-dark-navy bg-dark-navy w-full p-4 rounded-t-2xl">

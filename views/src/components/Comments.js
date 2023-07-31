@@ -1,11 +1,13 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { toast } from 'react-toastify';
 import Sharemodal from "./Sharemodal";
 import EditCommentModal from "./EditCommentModal";
 import axios from 'axios'
+import { useAuthContext } from "../hooks/useAuthContext";
+import useFetchSimpleUser from "../hooks/useFetchSimpleUser";
 
-const Comments = ({ comment, postid }) => {
+const Comments = ({ comment, postid, loggedUser }) => {
     const [saved, setSaved] = useState(false)
     const [share, setShare] = useState(false)
     const [show, setShow] = useState(false)
@@ -13,26 +15,96 @@ const Comments = ({ comment, postid }) => {
     const [downvote, setDownvote] = useState(false)
     const [upVoteNumber, setUpvoteNumber] = useState(comment.upVote)
     const [downVoteNumber, setDownVoteNumber] = useState(comment.downVote)
+    const [userView, setUserView] = useState(false)
+    const { user } = useAuthContext()
+    const userDetails = useFetchSimpleUser('/api/user/' + comment.username)
+
+    useEffect(() => {
+        if (userDetails && user) {
+            if (userDetails[0].email === user.email) {
+                setUserView(true)
+            } else {
+                setUserView(false)
+            }
+        }
+    })
+
+    useEffect(() => {
+        if (loggedUser) {
+            const userVote = loggedUser[0].votedComments.find((vote) => vote.comment === comment._id)
+            console.log(userVote)
+            if (userVote) {
+                if (userVote.vote === 'upvote') {
+                    setUpvote(true)
+                    setDownvote(false)
+                } else {
+                    setDownvote(true)
+                    setUpvote(false)
+                }
+            }
+        }
+    }, [loggedUser])
+
+
+
 
     const handleUpvote = () => {
+        const userId = { userId: loggedUser[0]._id }
         if (upvote === false) {
             setUpvote(true)
             setDownvote(false)
             setUpvoteNumber(upVoteNumber + 1)
-            axios.patch(`/api/askposts/${postid}/comment/${comment._id}/upvote`)
+            if (downVoteNumber !== 0) {
+                setDownVoteNumber((oldDownvote) => oldDownvote - 1)
+            } else {
+                setDownVoteNumber(0)
+            }
+            axios.post(`/api/askposts/${postid}/comment/${comment._id}/upvote`, userId, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
         } else {
-            toast("😔 Sorry you already upvoted it!")
+            axios.post(`/api/askposts/${postid}/comment/${comment._id}/undoUpvote`, userId, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
+            setUpvote(false)
+            setUpvoteNumber((oldUpvote) => oldUpvote - 1)
+            toast("😔 Upvote undone.")
         }
     }
 
     const handleDownvote = () => {
+        const userId = { userId: loggedUser[0]._id }
         if (downvote === false) {
             setDownvote(true)
             setUpvote(false)
             setDownVoteNumber(downVoteNumber + 1)
-            axios.patch(`/api/askposts/${postid}/comment/${comment._id}/downvote`)
+            if (upVoteNumber !== 0) {
+                setUpvoteNumber((oldUpvote) => oldUpvote - 1)
+            } else {
+                setUpvoteNumber(0)
+            }
+            axios.post(`/api/askposts/${postid}/comment/${comment._id}/downvote`, userId, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
         } else {
-            toast("😔 Sorry you already downvoted it!")
+            axios.post(`/api/askposts/${postid}/comment/${comment._id}/undoDownvote`, userId, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
+            setDownvote(false)
+            if(downvote !== 0) {
+                setDownVoteNumber((oldDownvote) => oldDownvote - 1)
+            } else {
+                setDownVoteNumber(0)
+            }
+            toast("😊 Downvote undone.")
         }
     }
 
@@ -57,7 +129,10 @@ const Comments = ({ comment, postid }) => {
     const handleClick = async () => {
         console.log(comment)
         const response = await fetch('/api/askposts/' + postid + "/comment/" + comment._id, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
         })
 
         const json = await response.json()
@@ -74,19 +149,20 @@ const Comments = ({ comment, postid }) => {
 
                     <div className="comment-header" class="flex justify-between p-2">
                         <p><Link to={'/viewprofile/' + comment.username}><span class="font-bold text-d-lasalle">@{comment.username}</span> </Link>replied...</p>
-
-                        <div className="edit-delete" class="flex gap-4">
-                            <button onClick={() => { setShow(true) }}>Edit</button>
-                            {
-                                show &&
-                                <EditCommentModal close={() => { setShow(false) }} onClose={() => {
-                                    setShow(false)
-                                    window.location.reload(false)
-                                }} show={show} data={comment} postid={postid} />
-                            }
-                            <button onClick={handleClick}>Delete</button>
-                        </div>
-
+                        {
+                            userView &&
+                            <div className="edit-delete" class="flex gap-4">
+                                <button onClick={() => { setShow(true) }}>Edit</button>
+                                {
+                                    show &&
+                                    <EditCommentModal close={() => { setShow(false) }} onClose={() => {
+                                        setShow(false)
+                                        window.location.reload(false)
+                                    }} show={show} data={comment} postid={postid} />
+                                }
+                                <button onClick={handleClick}>Delete</button>
+                            </div>
+                        }
                     </div>
 
                     <hr class="bg-neutral-400 h-0.5 mx-2"></hr>

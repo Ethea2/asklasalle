@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from "react-toastify";
 import Sharemodal from "./Sharemodal";
 import useFetchSimpleUser from "../hooks/useFetchSimpleUser";
@@ -7,11 +7,14 @@ import EditPostModal from "./EditPostModal";
 import useFetch from "../hooks/useFetch"
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
+import { useAuthContext } from "../hooks/useAuthContext";
 
-const PostcardFull = ({ post }) => {
+const PostcardFull = ({ post, loggedUser }) => {
+    const { user } = useAuthContext()
     const [share, setShare] = useState(false)
     const [saved, setSaved] = useState(false)
-    const user = useFetchSimpleUser('/api/user/' + post.username)
+    const [userView, setUserView] = useState(false)
+    const userDetails = useFetchSimpleUser('/api/user/' + post.username)
     const { postid } = useParams()
     const navigate = useNavigate()
 
@@ -20,25 +23,85 @@ const PostcardFull = ({ post }) => {
     const [upVoteNumber, setUpvoteNumber] = useState(post.upVote)
     const [downVoteNumber, setDownVoteNumber] = useState(post.downVote)
 
+    useEffect(() => {
+        if (userDetails && user) {
+            if (userDetails[0].email === user.email) {
+                setUserView(true)
+            } else {
+                setUserView(false)
+            }
+        }
+    })
+
+    useEffect(() => {
+        if (loggedUser) {
+            const userVote = loggedUser[0].votedPosts.find((vote) => vote.post === post._id)
+            if (userVote) {
+                if (userVote.vote === 'upvote') {
+                    setUpvote(true)
+                    setDownvote(false)
+                } else {
+                    setDownvote(true)
+                    setUpvote(false)
+                }
+            }
+        }
+    }, [loggedUser])
+
     const handleUpvote = () => {
+        const userId = { userId: loggedUser[0]._id }
         if (upvote === false) {
             setUpvote(true)
             setDownvote(false)
             setUpvoteNumber(upVoteNumber + 1)
-            axios.patch(`/api/askposts/${post._id}/upvote`)
+            if (downVoteNumber !== 0) {
+                setDownVoteNumber((oldDownvote) => oldDownvote - 1)
+            } else {
+                setDownVoteNumber(0)
+            }
+            axios.post(`/api/askposts/${post._id}/upvote`, userId, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
         } else {
-            toast("😔 Sorry you already upvoted it!")
+            axios.post(`/api/askposts/${post._id}/undoUpvote`, userId, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
+            setUpvote(false)
+            setUpvoteNumber((oldUpvote) => oldUpvote - 1)
+            toast("😔 Upvote undone.")
         }
     }
 
+
     const handleDownvote = () => {
+        const userId = { userId: loggedUser[0]._id }
         if (downvote === false) {
             setDownvote(true)
             setUpvote(false)
             setDownVoteNumber(downVoteNumber + 1)
-            axios.patch(`/api/askposts/${post._id}/downvote`)
+            if (upVoteNumber !== 0) {
+                setUpvoteNumber((oldUpvote) => oldUpvote - 1)
+            } else {
+                setUpvoteNumber(0)
+            }
+            axios.post(`/api/askposts/${post._id}/downvote`, userId, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
         } else {
-            toast("😔 Sorry you already downvoted it!")
+            axios.post(`/api/askposts/${post._id}/undoDownvote`, userId, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
+            setDownvote(false)
+            setDownVoteNumber((oldDownvote) => oldDownvote - 1)
+            toast("😊 Downvote undone.")
         }
     }
 
@@ -65,7 +128,10 @@ const PostcardFull = ({ post }) => {
 
     const handleClick = async () => {
         const response = await fetch('/api/askposts/' + post._id, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
         })
 
         const json = await response.json()
@@ -86,8 +152,8 @@ const PostcardFull = ({ post }) => {
                             <div className="rounded-full w-7 h-7 overflow-hidden">
                                 <Link to={'/viewprofile/' + post.username}>
                                     {
-                                        user &&
-                                        <img src={user[0].img} class="block object-cover"></img>
+                                        userDetails &&
+                                        <img src={userDetails[0].img} class="block object-cover"></img>
                                     }
                                 </Link>
                             </div>
@@ -102,21 +168,23 @@ const PostcardFull = ({ post }) => {
                                 </p>
                             </div>
                         </div>
-                        <div class="w-1/5 flex justify-end gap-4">
-                            {post &&
-                                <div className="edit-post">
-                                    <button onClick={() => setShow(true)}>Edit</button>
-                                    {show && <EditPostModal close={() => setShow(false)} onClose={() => {
-                                        setShow(false)
-                                        window.location.reload(false)
-                                    }} show={show} data={post} />}
-                                </div>
-                            }
+                        {userView &&
+                            <div class="w-1/5 flex justify-end gap-4">
+                                {post &&
+                                    <div className="edit-post">
+                                        <button onClick={() => setShow(true)}>Edit</button>
+                                        {show && <EditPostModal close={() => setShow(false)} onClose={() => {
+                                            setShow(false)
+                                            window.location.reload(false)
+                                        }} show={show} data={post} />}
+                                    </div>
+                                }
 
-                            <div className="delete-post">
-                                <button onClick={handleClick}>Delete</button>
+                                <div className="delete-post">
+                                    <button onClick={handleClick}>Delete</button>
+                                </div>
                             </div>
-                        </div>
+                        }
                     </div>
 
                     <hr class="bg-neutral-500 m-2 mt-0.5 h-0.5"></hr>

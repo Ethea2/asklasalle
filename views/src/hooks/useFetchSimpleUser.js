@@ -10,7 +10,7 @@ const useFetchSimpleUser = (url) => {
             
             if (response.ok) {
                 setUsers(json)
-            } 
+            }
         }
         fetchData()
     }, [url])

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from './useAuthContext'
+import useFetchSimpleUser from './useFetchSimpleUser';
 
 export const useLogin = () => {
     const [iserror, setError] = useState(null)
@@ -23,10 +24,9 @@ export const useLogin = () => {
             setIsLoading(false)
             setError(json.error)
         }
-        if (response.ok) {
+        if (response.ok) {    
             // save the user to local storage
             localStorage.setItem('user', JSON.stringify(json))
-
             // update the auth context
             dispatch({ type: 'LOGIN', payload: json })
 

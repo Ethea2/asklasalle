@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const EditCommentModal = ({close, onClose, show, data, postid}) => {
-
-    const [body, setBody] = useState('')
+    const [body, setBody] = useState(data.body)
     const [error, setError] = useState(null)
+    const { user } = useAuthContext()
 
     if(!show){
         return null
@@ -18,7 +19,8 @@ const EditCommentModal = ({close, onClose, show, data, postid}) => {
             method: 'PATCH',
             body: JSON.stringify(commentBody),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
             }
         })
         const json = await response.json()
@@ -47,7 +49,7 @@ const EditCommentModal = ({close, onClose, show, data, postid}) => {
                 <div className="modal-body" class="px-10 py-8 border-l border-r border-black">
                     <div className="edit-body" class="flex flex-col gap-0.5 mt-2">
                         <label htmlFor="body">Your reply:</label>
-                        <textarea type="text" required="" class="resize-none w-full h-52 p-2 border border-neutral-500 rounded-lg" onChange={(e) => setBody(e.target.value)} value={data.body}/>
+                        <textarea type="text" required="" class="resize-none w-full h-52 p-2 border border-neutral-500 rounded-lg" onChange={(e) => setBody(e.target.value)} value={body}/>
                     </div>
                     
                     {error && <div className="error">

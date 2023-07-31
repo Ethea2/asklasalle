@@ -131,6 +131,20 @@ const signupUser = async(req, res) => {
     }
 }
 
+// fetch user by email
+const fetch_user_by_email = async (req, res) => {
+    const { email } = req.params
+    // if (!mongoose.Types.ObjectId.isValid(id)) {
+    //     return res.status(404).json({ error: 'This user does not exist' })
+    // }
+
+    const user = await User.find({ "email" : email }).select({})
+    if (!user) {
+        return res.status(404).json({ error: 'This user does not exist!' })
+    }
+    res.status(200).json(user)
+}
+
 module.exports = {
     get_users,
     get_singleUser,
@@ -138,5 +152,6 @@ module.exports = {
     edit_userInfo,
     edit_user_picture,
     loginUser, 
-    signupUser
+    signupUser,
+    fetch_user_by_email
 }

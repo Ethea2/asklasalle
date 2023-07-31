@@ -4,35 +4,86 @@ import { toast } from 'react-toastify'
 import axios from 'axios'
 import Sharemodal from './Sharemodal'
 import useFetchSimpleUser from '../hooks/useFetchSimpleUser'
-const Postcard = ({ post }) => {
+import { useAuthContext } from '../hooks/useAuthContext'
+const Postcard = ({ post,loggedUser }) => {
 
-    const user = useFetchSimpleUser(`/api/user/${post.username}`)
+    const userDetails = useFetchSimpleUser(`/api/user/${post.username}`)
     const [share, setShare] = useState(false)
     const [saved, setSaved] = useState(false)
     const [upvote, setUpvote] = useState(false)
     const [downvote, setDownvote] = useState(false)
     const [upVoteNumber, setUpvoteNumber] = useState(post.upVote)
     const [downVoteNumber, setDownVoteNumber] = useState(post.downVote)
+    const { user } = useAuthContext()
+
+    useEffect(() => {
+        if (loggedUser) {
+            const userVote = loggedUser[0].votedPosts.find((vote) => vote.post === post._id)
+            if (userVote) {
+                if (userVote.vote === 'upvote') {
+                    setUpvote(true)
+                    setDownvote(false)
+                } else {
+                    setDownvote(true)
+                    setUpvote(false)
+                }
+            }
+        }
+    }, [loggedUser])
 
     const handleUpvote = () => {
-        if(upvote === false) {
+        const userId = { userId: loggedUser[0]._id }
+        if (upvote === false) {
             setUpvote(true)
             setDownvote(false)
             setUpvoteNumber(upVoteNumber + 1)
-            axios.patch(`/api/askposts/${post._id}/upvote`)
+            if (downVoteNumber !== 0) {
+                setDownVoteNumber((oldDownvote) => oldDownvote - 1)
+            } else {
+                setDownVoteNumber(0)
+            }
+            axios.post(`/api/askposts/${post._id}/upvote`, userId, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
         } else {
-            toast("😔 Sorry you already upvoted it!")
+            axios.post(`/api/askposts/${post._id}/undoUpvote`, userId, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
+            setUpvote(false)
+            setUpvoteNumber((oldUpvote) => oldUpvote - 1)
+            toast("😔 Upvote undone.")
         }
     }
 
     const handleDownvote = () => {
+        const userId = { userId: loggedUser[0]._id }
         if (downvote === false) {
             setDownvote(true)
             setUpvote(false)
             setDownVoteNumber(downVoteNumber + 1)
-            axios.patch(`/api/askposts/${post._id}/downvote`)
+            if (upVoteNumber !== 0) {
+                setUpvoteNumber((oldUpvote) => oldUpvote - 1)
+            } else {
+                setUpvoteNumber(0)
+            }
+            axios.post(`/api/askposts/${post._id}/downvote`, userId, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
         } else {
-            toast("😔 Sorry you already downvoted it!")
+            axios.post(`/api/askposts/${post._id}/undoDownvote`, userId, {
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
+            setDownvote(false)
+            setDownVoteNumber((oldDownvote) => oldDownvote - 1)
+            toast("😊 Downvote undone.")
         }
     }
 
@@ -64,8 +115,8 @@ const Postcard = ({ post }) => {
                     <div className="user-info " class="w-full p-2 h-1/4 flex gap-2">
                         <div className="rounded-full w-7 h-7 overflow-hidden">
                             {
-                                user &&
-                                <img src={user[0].img} class="block object-cover"></img>
+                                userDetails &&
+                                <img src={userDetails[0].img} class="block object-cover"></img>
                             }
                         </div>
 

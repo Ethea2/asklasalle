@@ -10,6 +10,10 @@ const Onboarding = () => {
     let button;
 
     useEffect(() => {
+        localStorage.clear()
+    }, [])
+
+    useEffect(() => {
         if (iserror) {
             toast(iserror)
         }
@@ -17,7 +21,6 @@ const Onboarding = () => {
 
     const submit = (e) => {
         e.preventDefault()
-
         login(email, password)
     }
 

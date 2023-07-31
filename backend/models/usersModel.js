@@ -34,11 +34,33 @@ const usersSchema = new Schema({
     img: {
         type: String,
         required: true
-    }
+    },
+    votedPosts: [{
+        post: {
+            type: Schema.Types.ObjectId,
+            ref: 'Post'
+        },
+        vote: {
+            type: String,
+            enum: ['upvote', 'downvote'],
+            required: false
+        }
+    }],
+    votedComments: [{
+        comment: {
+            type: Schema.Types.ObjectId,
+            ref: 'Comment'
+        },
+        vote: {
+            type: String,
+            enum: ['upvote', 'downvote'],
+            required: false
+        }
+    }]
 }, { timestamps: true })
 
 // static signup method
-usersSchema.statics.signup = async function(email, password, username) {
+usersSchema.statics.signup = async function (email, password, username) {
     //default img and displayname
     const displayName = uniqueNamesGenerator({
         dictionaries: [colors, animals],
@@ -49,10 +71,10 @@ usersSchema.statics.signup = async function(email, password, username) {
     const img = `https://picsum.photos/200?random=${Math.random()}`
 
     // validation
-    if(!email || !password) {
+    if (!email || !password) {
         throw Error('❌ All fields must be filled')
     }
-    if(!validator.isEmail(email)){
+    if (!validator.isEmail(email)) {
         throw Error('❌ Email is not valid')
     }
 
@@ -64,15 +86,18 @@ usersSchema.statics.signup = async function(email, password, username) {
 
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
+    const votedPosts = [];
+    const votedComments = [];
 
-    const user = await this.create({ email, password: hash, username, displayName: displayName, img: img })
+
+    const user = await this.create({ email, password: hash, username, displayName: displayName, img: img, votedPosts, votedComments })
 
     return user
 }
 
 // static login method
-usersSchema.statics.login = async function(email, password) {
-    if(!email || !password) {
+usersSchema.statics.login = async function (email, password) {
+    if (!email || !password) {
         throw Error('❌ All fields must be filled')
     }
 
@@ -84,7 +109,7 @@ usersSchema.statics.login = async function(email, password) {
 
     const match = await bcrypt.compare(password, user.password)
 
-    if(!match){
+    if (!match) {
         throw Error('❌ Incorrect password!')
     }
 

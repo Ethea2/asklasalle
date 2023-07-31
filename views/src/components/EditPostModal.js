@@ -1,9 +1,10 @@
 import { useState } from "react"
+import { useAuthContext } from "../hooks/useAuthContext"
 
 const EditPostModal = ({ close, show, onClose, data }) => {
-
-    const [title, setTitle] = useState('')
-    const [body, setBody] = useState('')
+    const { user } = useAuthContext()
+    const [title, setTitle] = useState(data.title)
+    const [body, setBody] = useState(data.body)
     const [error, setError] = useState(null)
 
     if (!show) {
@@ -20,7 +21,8 @@ const EditPostModal = ({ close, show, onClose, data }) => {
             method: 'PATCH',
             body: JSON.stringify(post),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
             }
         })
         const json = await response.json()
@@ -48,11 +50,11 @@ const EditPostModal = ({ close, show, onClose, data }) => {
                     <div className="modal-body px-10 py-8 border-l border-r border-black">
                         <div className="edit-displayName flex flex-col gap-0.5 mb-2">
                             <label htmlFor="displayName">Title</label>
-                            <input type="text" required className="border border-neutral-500 rounded-lg" onChange={(e) => setTitle(e.target.value)} value={data.title} />
+                            <input type="text" required className="border border-neutral-500 rounded-lg" onChange={(e) => setTitle(e.target.value)} value={title} />
                         </div>
                         <div className="edit-bio flex flex-col gap-0.5 mt-2">
                             <label htmlFor="bio">Body</label>
-                            <textarea type="text" required className="resize-none w-full h-52 p-2 border border-neutral-500 rounded-lg" onChange={(e) => setBody(e.target.value)} value={data.body} />
+                            <textarea type="text" required className="resize-none w-full h-52 p-2 border border-neutral-500 rounded-lg" onChange={(e) => setBody(e.target.value)} value={body} />
                         </div>
                         {error && <div className="error">
                             {error}

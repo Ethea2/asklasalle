@@ -1,20 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const AddComment = ({data}) => {
-
+    const [username, setUsername] = useState()
     const [body, setBody] = useState('')
     const [error, setError] = useState(null)
+    const { user } = useAuthContext()
+
+    useEffect(() => {
+        setUsername(JSON.parse(localStorage.getItem('userDetails')).username)
+    }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const comment = { body }
+        const comment = { username, body }
         
         const response = await fetch('/api/askposts/' + data._id + '/comment', {
             method: 'POST',
             body: JSON.stringify(comment),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
             }
         })
         const json = await response.json()
