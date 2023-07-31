@@ -9,7 +9,7 @@ const cors = require('cors')
 
 // express app
 const app = express()
-
+app.use(cors())
 app.use(cors({
     origin: ['https://asklasalle.vercel.app', 'http://localhost:3000'],
     methods: ["GET", "POST", "PATCH", "DELETE"],

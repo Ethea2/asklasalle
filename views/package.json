@@ -1,5 +1,5 @@
 {
-  "proxy": "http://asklasalle.vercel.app",
+  "proxy": "http://localhost:3000",
   "name": "real-apdev",
   "version": "0.1.0",
   "private": true,
