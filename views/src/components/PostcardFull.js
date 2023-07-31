@@ -135,7 +135,7 @@ const PostcardFull = ({ post, loggedUser }) => {
     const [show, setShow] = useState(false)
 
     const handleClick = async () => {
-        const response = await fetch(api + '/api/askposts/' + post._id, {
+        const response = await fetch(apiUrl + '/api/askposts/' + post._id, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${user.token}`

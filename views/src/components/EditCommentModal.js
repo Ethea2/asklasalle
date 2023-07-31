@@ -2,6 +2,10 @@ import { useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 const EditCommentModal = ({close, onClose, show, data, postid}) => {
+    const apiUrl =
+        process.env.NODE_ENV === 'production'
+            ? process.env.REACT_APP_URL_PRODUCTION
+            : process.env.REACT_APP_URL_DEV
     const [body, setBody] = useState(data.body)
     const [error, setError] = useState(null)
     const { user } = useAuthContext()
