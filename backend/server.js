@@ -4,11 +4,17 @@ const mongoose = require('mongoose')
 const file_upload = require('express-fileupload')
 const postRoutes = require('./routes/posts');
 const userRoutes = require('./routes/users')
+const cors = require('cors')
 
 
 // express app
 const app = express()
 
+app.use(cors({
+    origin: ['asklasalle.vercel.app'],
+    methods: ["POST", "PATCH", "DELETE", "GET"],
+    credentials:true
+}))
 
 // middleware
 app.use(express.json({limit: '50mb'}));

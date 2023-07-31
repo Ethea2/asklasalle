@@ -54,10 +54,12 @@ const Comments = ({ comment, postid, loggedUser }) => {
             setUpvote(true)
             setDownvote(false)
             setUpvoteNumber(upVoteNumber + 1)
-            if (downVoteNumber !== 0) {
-                setDownVoteNumber((oldDownvote) => oldDownvote - 1)
-            } else {
-                setDownVoteNumber(0)
+            if (upvote || downvote) {
+                if (downVoteNumber !== 0) {
+                    setDownVoteNumber((oldDownvote) => oldDownvote - 1)
+                } else {
+                    setDownVoteNumber(0)
+                }
             }
             axios.post(`/api/askposts/${postid}/comment/${comment._id}/upvote`, userId, {
                 headers: {
@@ -82,10 +84,12 @@ const Comments = ({ comment, postid, loggedUser }) => {
             setDownvote(true)
             setUpvote(false)
             setDownVoteNumber(downVoteNumber + 1)
-            if (upVoteNumber !== 0) {
-                setUpvoteNumber((oldUpvote) => oldUpvote - 1)
-            } else {
-                setUpvoteNumber(0)
+            if (upvote || downvote) {
+                if (upVoteNumber !== 0) {
+                    setUpvoteNumber((oldUpvote) => oldUpvote - 1)
+                } else {
+                    setUpvoteNumber(0)
+                }
             }
             axios.post(`/api/askposts/${postid}/comment/${comment._id}/downvote`, userId, {
                 headers: {
@@ -99,7 +103,7 @@ const Comments = ({ comment, postid, loggedUser }) => {
                 }
             })
             setDownvote(false)
-            if(downvote !== 0) {
+            if (downvote !== 0) {
                 setDownVoteNumber((oldDownvote) => oldDownvote - 1)
             } else {
                 setDownVoteNumber(0)

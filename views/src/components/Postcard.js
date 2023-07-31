@@ -5,7 +5,7 @@ import axios from 'axios'
 import Sharemodal from './Sharemodal'
 import useFetchSimpleUser from '../hooks/useFetchSimpleUser'
 import { useAuthContext } from '../hooks/useAuthContext'
-const Postcard = ({ post,loggedUser }) => {
+const Postcard = ({ post, loggedUser }) => {
 
     const userDetails = useFetchSimpleUser(`/api/user/${post.username}`)
     const [share, setShare] = useState(false)
@@ -37,10 +37,12 @@ const Postcard = ({ post,loggedUser }) => {
             setUpvote(true)
             setDownvote(false)
             setUpvoteNumber(upVoteNumber + 1)
-            if (downVoteNumber !== 0) {
-                setDownVoteNumber((oldDownvote) => oldDownvote - 1)
-            } else {
-                setDownVoteNumber(0)
+            if (upvote || downvote) {
+                if (downVoteNumber !== 0) {
+                    setDownVoteNumber((oldDownvote) => oldDownvote - 1)
+                } else {
+                    setDownVoteNumber(0)
+                }
             }
             axios.post(`/api/askposts/${post._id}/upvote`, userId, {
                 headers: {
@@ -65,10 +67,12 @@ const Postcard = ({ post,loggedUser }) => {
             setDownvote(true)
             setUpvote(false)
             setDownVoteNumber(downVoteNumber + 1)
-            if (upVoteNumber !== 0) {
-                setUpvoteNumber((oldUpvote) => oldUpvote - 1)
-            } else {
-                setUpvoteNumber(0)
+            if (upvote || downvote) {
+                if (upVoteNumber !== 0) {
+                    setUpvoteNumber((oldUpvote) => oldUpvote - 1)
+                } else {
+                    setUpvoteNumber(0)
+                }
             }
             axios.post(`/api/askposts/${post._id}/downvote`, userId, {
                 headers: {
