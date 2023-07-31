@@ -15,7 +15,7 @@ const EditCommentModal = ({close, onClose, show, data, postid}) => {
 
         const commentBody = {body}
 
-        const response = await fetch('/api/askposts/' + postid + "/comment/" + data._id, {
+        const response = await fetch(apiUrl + '/api/askposts/' + postid + "/comment/" + data._id, {
             method: 'PATCH',
             body: JSON.stringify(commentBody),
             headers: {

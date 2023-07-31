@@ -6,7 +6,10 @@ import Sharemodal from './Sharemodal'
 import useFetchSimpleUser from '../hooks/useFetchSimpleUser'
 import { useAuthContext } from '../hooks/useAuthContext'
 const Postcard = ({ post, loggedUser }) => {
-
+    const apiUrl =
+        process.env.NODE_ENV === 'production'
+            ? process.env.REACT_APP_URL_PRODUCTION
+            : process.env.REACT_APP_URL_DEV
     const userDetails = useFetchSimpleUser(`/api/user/${post.username}`)
     const [share, setShare] = useState(false)
     const [saved, setSaved] = useState(false)
@@ -44,13 +47,13 @@ const Postcard = ({ post, loggedUser }) => {
                     setDownVoteNumber(0)
                 }
             }
-            axios.post(`/api/askposts/${post._id}/upvote`, userId, {
+            axios.post(apiUrl + `/api/askposts/${post._id}/upvote`, userId, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
             })
         } else {
-            axios.post(`/api/askposts/${post._id}/undoUpvote`, userId, {
+            axios.post(apiUrl + `/api/askposts/${post._id}/undoUpvote`, userId, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
@@ -74,13 +77,13 @@ const Postcard = ({ post, loggedUser }) => {
                     setUpvoteNumber(0)
                 }
             }
-            axios.post(`/api/askposts/${post._id}/downvote`, userId, {
+            axios.post(apiUrl + `/api/askposts/${post._id}/downvote`, userId, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
             })
         } else {
-            axios.post(`/api/askposts/${post._id}/undoDownvote`, userId, {
+            axios.post(apiUrl + `/api/askposts/${post._id}/undoDownvote`, userId, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }

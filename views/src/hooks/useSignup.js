@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useAuthContext } from './useAuthContext'
 
 export const useSignup = () => {
+    const apiUrl =
+        process.env.NODE_ENV === 'production'
+            ? process.env.REACT_APP_URL_PRODUCTION
+            : process.env.REACT_APP_URL_DEV
     const [iserror, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(null)
     const { dispatch } = useAuthContext()
@@ -12,7 +16,7 @@ export const useSignup = () => {
         setIsLoading(true)
         setError(null)
 
-        const response = await fetch('/api/user/signup', {
+        const response = await fetch(apiUrl + '/api/user/signup', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ email, password, username })

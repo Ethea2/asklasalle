@@ -7,7 +7,10 @@ import useFetchSimpleUser from '../hooks/useFetchSimpleUser'
 import { useAuthContext } from "../hooks/useAuthContext";
 
 const Createpost = () => {
-
+    const apiUrl =
+        process.env.NODE_ENV === 'production'
+            ? process.env.REACT_APP_URL_PRODUCTION
+            : process.env.REACT_APP_URL_DEV
     const navigate = useNavigate();
     const { user } = useAuthContext()
     const [username, setUsername] = useState('')
@@ -36,7 +39,7 @@ const Createpost = () => {
 
         const post = { username, title, body }
 
-        const response = await fetch('/api/askposts', {
+        const response = await fetch(apiUrl + '/api/askposts', {
             method: 'POST',
             body: JSON.stringify(post),
             headers: {

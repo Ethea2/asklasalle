@@ -4,6 +4,10 @@ import { useAuthContext } from './useAuthContext'
 import useFetchSimpleUser from './useFetchSimpleUser';
 
 export const useLogin = () => {
+    const apiUrl =
+        process.env.NODE_ENV === 'production'
+            ? process.env.REACT_APP_URL_PRODUCTION
+            : process.env.REACT_APP_URL_DEV
     const [iserror, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(null)
     const { dispatch } = useAuthContext()
@@ -13,7 +17,7 @@ export const useLogin = () => {
         setIsLoading(true)
         setError(null)
 
-        const response = await fetch('/api/user/login', {
+        const response = await fetch(apiUrl + '/api/user/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password })

@@ -2,6 +2,10 @@ import { useState } from "react"
 import { useAuthContext } from "../hooks/useAuthContext"
 
 const EditPostModal = ({ close, show, onClose, data }) => {
+    const apiUrl =
+        process.env.NODE_ENV === 'production'
+            ? process.env.REACT_APP_URL_PRODUCTION
+            : process.env.REACT_APP_URL_DEV
     const { user } = useAuthContext()
     const [title, setTitle] = useState(data.title)
     const [body, setBody] = useState(data.body)
@@ -16,8 +20,7 @@ const EditPostModal = ({ close, show, onClose, data }) => {
 
         const post = { title, body }
 
-        console.log('/api/askposts/' + data._id)
-        const response = await fetch('/api/askposts/' + data._id, {
+        const response = await fetch(apiUrl + '/api/askposts/' + data._id, {
             method: 'PATCH',
             body: JSON.stringify(post),
             headers: {

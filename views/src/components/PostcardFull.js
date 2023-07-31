@@ -10,6 +10,10 @@ import axios from "axios"
 import { useAuthContext } from "../hooks/useAuthContext";
 
 const PostcardFull = ({ post, loggedUser }) => {
+    const apiUrl =
+        process.env.NODE_ENV === 'production'
+            ? process.env.REACT_APP_URL_PRODUCTION
+            : process.env.REACT_APP_URL_DEV
     const { user } = useAuthContext()
     const [share, setShare] = useState(false)
     const [saved, setSaved] = useState(false)
@@ -61,13 +65,13 @@ const PostcardFull = ({ post, loggedUser }) => {
                     setDownVoteNumber(0)
                 }
             }
-            axios.post(`/api/askposts/${post._id}/upvote`, userId, {
+            axios.post(apiUrl + `/api/askposts/${post._id}/upvote`, userId, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
             })
         } else {
-            axios.post(`/api/askposts/${post._id}/undoUpvote`, userId, {
+            axios.post(apiUrl + `/api/askposts/${post._id}/undoUpvote`, userId, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
@@ -92,13 +96,13 @@ const PostcardFull = ({ post, loggedUser }) => {
                     setUpvoteNumber(0)
                 }
             }
-            axios.post(`/api/askposts/${post._id}/downvote`, userId, {
+            axios.post(apiUrl + `/api/askposts/${post._id}/downvote`, userId, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
             })
         } else {
-            axios.post(`/api/askposts/${post._id}/undoDownvote`, userId, {
+            axios.post(apiUrl + `/api/askposts/${post._id}/undoDownvote`, userId, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
@@ -131,7 +135,7 @@ const PostcardFull = ({ post, loggedUser }) => {
     const [show, setShow] = useState(false)
 
     const handleClick = async () => {
-        const response = await fetch('/api/askposts/' + post._id, {
+        const response = await fetch(api + '/api/askposts/' + post._id, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${user.token}`

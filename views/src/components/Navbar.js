@@ -6,11 +6,15 @@ import { useAuthContext } from '../hooks/useAuthContext'
 import useFetchSimpleUser from '../hooks/useFetchSimpleUser'
 
 const Navbar = () => {
+    const apiUrl =
+        process.env.NODE_ENV === 'production'
+            ? process.env.REACT_APP_URL_PRODUCTION
+            : process.env.REACT_APP_URL_DEV
     const [search, setSearch] = useState('')
     const navigate = useNavigate()
     const { user } = useAuthContext()
     const { logout } = useLogout()
-    const userDetails = useFetchSimpleUser(user ? '/api/user/email/' + user.email : '/' + null)
+    const userDetails = useFetchSimpleUser(user ? apiUrl + '/api/user/email/' + user.email : '/' + null)
 
     useEffect(() => {
         if (userDetails) {

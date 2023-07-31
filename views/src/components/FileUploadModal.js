@@ -4,6 +4,10 @@ import { toast } from 'react-toastify'
 import { useAuthContext } from "../hooks/useAuthContext"
 
 const FileUploadModal = ({ close, data }) => {
+    const apiUrl =
+        process.env.NODE_ENV === 'production'
+            ? process.env.REACT_APP_URL_PRODUCTION
+            : process.env.REACT_APP_URL_DEV
     const [img, setImg] = useState([])
     const [loading, setLoading] = useState(false)
     const { user } = useAuthContext()
@@ -36,7 +40,7 @@ const FileUploadModal = ({ close, data }) => {
             const form = new FormData()
             form.append("img", img)
             form.append("_method", "PATCH")
-            axios.post('/api/user/' + data[0]._id + "/picture", form, {
+            axios.post(apiUrl + '/api/user/' + data[0]._id + "/picture", form, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }

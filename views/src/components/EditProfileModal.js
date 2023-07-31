@@ -4,6 +4,10 @@ import { useAuthContext } from "../hooks/useAuthContext"
 
 const EditProfileModal = ({close, onClose, show, data}) => {
 
+    const apiUrl =
+        process.env.NODE_ENV === 'production'
+            ? process.env.REACT_APP_URL_PRODUCTION
+            : process.env.REACT_APP_URL_DEV
     const [displayName, setDisplayName] = useState(data[0].displayName)
     const [bio, setBio] = useState(data[0].bio)
     const [error, setError] = useState(null)
@@ -21,7 +25,7 @@ const EditProfileModal = ({close, onClose, show, data}) => {
 
         const profile = {displayName, bio}
 
-        const response = await fetch('/api/user/' + data[0]._id, {
+        const response = await fetch(apiUrl + '/api/user/' + data[0]._id, {
             method: 'PATCH',
             body: JSON.stringify(profile),
             headers: {

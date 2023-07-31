@@ -8,6 +8,10 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import useFetchSimpleUser from "../hooks/useFetchSimpleUser";
 
 const Comments = ({ comment, postid, loggedUser }) => {
+    const apiUrl =
+        process.env.NODE_ENV === 'production'
+            ? process.env.REACT_APP_URL_PRODUCTION
+            : process.env.REACT_APP_URL_DEV
     const [saved, setSaved] = useState(false)
     const [share, setShare] = useState(false)
     const [show, setShow] = useState(false)
@@ -61,13 +65,13 @@ const Comments = ({ comment, postid, loggedUser }) => {
                     setDownVoteNumber(0)
                 }
             }
-            axios.post(`/api/askposts/${postid}/comment/${comment._id}/upvote`, userId, {
+            axios.post(apiUrl + `/api/askposts/${postid}/comment/${comment._id}/upvote`, userId, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
             })
         } else {
-            axios.post(`/api/askposts/${postid}/comment/${comment._id}/undoUpvote`, userId, {
+            axios.post(apiUrl + `/api/askposts/${postid}/comment/${comment._id}/undoUpvote`, userId, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
@@ -91,13 +95,13 @@ const Comments = ({ comment, postid, loggedUser }) => {
                     setUpvoteNumber(0)
                 }
             }
-            axios.post(`/api/askposts/${postid}/comment/${comment._id}/downvote`, userId, {
+            axios.post(apiUrl + `/api/askposts/${postid}/comment/${comment._id}/downvote`, userId, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
             })
         } else {
-            axios.post(`/api/askposts/${postid}/comment/${comment._id}/undoDownvote`, userId, {
+            axios.post(apiUrl + `/api/askposts/${postid}/comment/${comment._id}/undoDownvote`, userId, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
@@ -132,7 +136,7 @@ const Comments = ({ comment, postid, loggedUser }) => {
 
     const handleClick = async () => {
         console.log(comment)
-        const response = await fetch('/api/askposts/' + postid + "/comment/" + comment._id, {
+        const response = await fetch(apiUrl + '/api/askposts/' + postid + "/comment/" + comment._id, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${user.token}`

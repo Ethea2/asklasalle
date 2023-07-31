@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 const AddComment = ({data}) => {
+    const apiUrl =
+        process.env.NODE_ENV === 'production'
+            ? process.env.REACT_APP_URL_PRODUCTION
+            : process.env.REACT_APP_URL_DEV
     const [username, setUsername] = useState()
     const [body, setBody] = useState('')
     const [error, setError] = useState(null)
@@ -16,7 +20,7 @@ const AddComment = ({data}) => {
 
         const comment = { username, body }
         
-        const response = await fetch('/api/askposts/' + data._id + '/comment', {
+        const response = await fetch(apiUrl + '/api/askposts/' + data._id + '/comment', {
             method: 'POST',
             body: JSON.stringify(comment),
             headers: {
