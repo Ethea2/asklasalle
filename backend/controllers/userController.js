@@ -72,7 +72,7 @@ const edit_user_picture = async (req, res) => {
     }
 
     try {
-        console.log(file)
+        console.log(file.tempFilePath)
         const result = await cloudinary.uploader.upload(file.tempFilePath , {
             public_id: Date.now(),
             folder: "images",
