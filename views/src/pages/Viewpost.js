@@ -13,7 +13,7 @@ const Viewpost = () => {
     const { user } = useAuthContext()
     const { data, isLoading, errorLoading } = useFetch('/api/askposts/' + postid)
     const comments = useFetchSimpleUser('/api/askposts/' + postid + '/comment')
-    const loggedUser = useFetchSimpleUser(user ? '/api/user/email/' + user.email : null)
+    const loggedUser = useFetchSimpleUser(user ? '/api/user/email/' + user.email : '/' + null)
 
     return (
         <>

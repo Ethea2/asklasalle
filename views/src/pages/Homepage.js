@@ -12,8 +12,8 @@ const Homepage = () => {
     const { user } = useAuthContext()
     const [upvotes, setUpvotes] = useState(false)
     const [comments, setComments] = useState(false)
-    const { data, isLoading, errorLoading } = useFetch('http://asklasalle.vercel.app/api/askposts/')
-    const loggedUser = useFetchSimpleUser(user ? '/api/user/email/' + user.email : null)
+    const { data, isLoading, errorLoading } = useFetch('/api/askposts/')
+    const loggedUser = useFetchSimpleUser(user ? '/api/user/email/' + user.email : '/' + null)
 
 
     const useUpvote = () => {

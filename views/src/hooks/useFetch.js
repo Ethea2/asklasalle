@@ -4,10 +4,14 @@ const useFetch = (url) => {
     const [data, setData] = useState()
     const [isLoading, setIsLoading] = useState(true)
     const [errorLoading, setErrorLoading] = useState()
+    const apiUrl = 
+        process.env.NODE_ENV === 'production'
+        ? process.env.REACT_APP_URL_PRODUCTION
+        : process.env.REACT_APP_URL_DEV
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(url)
+            const response = await fetch(apiUrl+url)
             const json = await response.json()
             
             if (response.ok) {

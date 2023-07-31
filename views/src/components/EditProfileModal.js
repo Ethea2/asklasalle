@@ -21,7 +21,6 @@ const EditProfileModal = ({close, onClose, show, data}) => {
 
         const profile = {displayName, bio}
 
-        console.log('/api/user/' + data[0]._id)
         const response = await fetch('/api/user/' + data[0]._id, {
             method: 'PATCH',
             body: JSON.stringify(profile),
