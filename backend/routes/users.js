@@ -14,8 +14,6 @@ userRouter.get('/', get_users)
 // GET single user
 userRouter.get('/:username', get_singleUser)
 
-
-
 // POST [create] new user
 userRouter.post('/', create_user)
 
