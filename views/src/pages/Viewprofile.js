@@ -17,6 +17,7 @@ const Viewprofile = () => {
     const [show, setShow] = useState(false)
     const [editPhoto, setEditPhoto] = useState(false)
     const [userView, setUserView] = useState(false)
+    const loggedUser = useFetchSimpleUser(user ? '/api/user/email/' + user.email : '/' + null)
 
     useEffect(() => {
         if (data && user) {
@@ -103,7 +104,7 @@ const Viewprofile = () => {
                 return (
                     <div className="user-posts" class="w-3/4 m-auto mt-8 mb-8">
                         <div className="filtered">
-                            <Postcard post={data} key={data.postid}></Postcard>
+                            <Postcard post={data} key={data.postid} loggedUser={loggedUser}></Postcard>
                         </div>
                     </div>
 
