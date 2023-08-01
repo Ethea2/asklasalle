@@ -79,7 +79,7 @@ const Homepage = () => {
                     }
 
                     {((data && !upvotes) && (data && !comments)) &&
-                        data.sort((a, b) => b.createdAt - a.createdAt).map((post) => {
+                        data.sort().map((post) => {
                             return (
                                 <Postcard post={post} key={post._id} loggedUser={loggedUser} ></Postcard>
                             )
