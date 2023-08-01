@@ -91,11 +91,11 @@ const Createpost = () => {
 
                             <div className="footer w-11/12 mt-8 m-auto flex justify-between">
 
-                                <div className="post-anon flex justify-center">
+                                {/* <div className="post-anon flex justify-center">
                                     <div className="anon-container bg-gray-300 rounded-lg px-4 py-2 flex gap-2">
                                         <label value={'anon_user'} class="font-semibold text-sm">Posting anonymously</label>
                                     </div>
-                                </div>
+                                </div> */}
 
                                 <div className="buttons flex gap-8">
                                     <button onClick={() => navigate(-1)} class="text-red-700 font-semibold">Cancel</button>
