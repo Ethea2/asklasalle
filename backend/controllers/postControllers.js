@@ -6,7 +6,10 @@ const mongoose = require('mongoose')
 
 // GET all posts
 const get_posts = async (req, res) => {
-    const posts = await Post.find({}).sort({ createdAt: -1 })
+    const page = req.query.page || 0
+    const postPerPage = 15
+
+    const posts = await Post.find({}).sort({ createdAt: -1 }).skip(page * postPerPage).limit(postPerPage)
     res.status(200).json(posts)
 }
 
