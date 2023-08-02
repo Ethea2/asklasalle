@@ -110,9 +110,7 @@ const Homepage = () => {
 
                         {
                             (data && upvotes) &&
-                            data.sort((a, b) => {
-                                return b.upVote - a.upVote
-                            }).map((post) => {
+                            data.sort((a, b) => b.upVote - a.upVote).map((post) => {
                                 return (
                                     <Postcard post={post} key={post._id} loggedUser={loggedUser} ></Postcard>
                                 )
@@ -121,9 +119,7 @@ const Homepage = () => {
 
                         {
                             (data && comments) &&
-                            data.sort((a, b) => {
-                                return b.replies.length - a.replies.length
-                            }).map((post) => {
+                            data.sort((a, b) => b.replies.length - a.replies.length).map((post) => {
                                 return (
                                     <Postcard post={post} key={post._id} loggedUser={loggedUser} ></Postcard>
                                 )
@@ -131,7 +127,7 @@ const Homepage = () => {
                         }
 
                         {((data && !upvotes) && (data && !comments)) &&
-                            data.sort().map((post) => {
+                            data.sort((a,b) => a.createdAt.localeCompare(b.createdAt)).map((post) => {
                                 return (
                                     <Postcard post={post} key={post._id} loggedUser={loggedUser} ></Postcard>
                                 )
