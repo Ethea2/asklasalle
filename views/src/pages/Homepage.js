@@ -22,16 +22,12 @@ const Homepage = () => {
     const [page, setPage] = useState(0)
     const [hasMore, setHasMore] = useState(true)
     const [loading, setLoading] = useState()
-    const [error, setError] = useState(false)
     const loggedUser = useFetchSimpleUser(user ? '/api/user/email/' + user.email : '/' + null)
 
     useEffect(() => {
         setLoading(true)
         const fetchPosts = async () => {
             const res = await axios(apiUrl + `/api/askposts?page=${page}`)
-            if (res.statusText !== "OK") {
-                setError(true)
-            }
             setData(res.data)
             setLoading(false)
         }
@@ -80,7 +76,6 @@ const Homepage = () => {
                     <Sidebar useUpvote={useUpvote} useComments={useComments} reset={reset} />
                 </div>
                 <div className="flex-col w-2/3 mt-14 mr-14 overflow-hidden">
-                    {error && <div>There was an error in the loading of the data.</div>}
                     {loading &&
                         <div className="text-center">
                             <div role="status">
