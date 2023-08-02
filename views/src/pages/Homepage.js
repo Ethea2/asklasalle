@@ -127,7 +127,7 @@ const Homepage = () => {
                         }
 
                         {((data && !upvotes) && (data && !comments)) &&
-                            data.sort((a,b) => a.createdAt.localeCompare(b.createdAt)).map((post) => {
+                            data.sort((a,b) => b.createdAt.localeCompare(a.createdAt)).map((post) => {
                                 return (
                                     <Postcard post={post} key={post._id} loggedUser={loggedUser} ></Postcard>
                                 )
