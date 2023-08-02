@@ -38,9 +38,6 @@ const Homepage = () => {
         setPage(page + 1)
         const fetchPosts = async () => {
             const res = await axios(apiUrl + `/api/askposts?page=${page + 1}`)
-            if (res.statusText !== "OK") {
-                setError(true)
-            }
             if (res.data.length === 0) {
                 setHasMore(false)
             } else {    
