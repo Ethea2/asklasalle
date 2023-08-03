@@ -116,7 +116,7 @@ const Postcard = ({ post, loggedUser }) => {
 
     return (
         <>
-            <div className="postcard" class="h-56 bg-light-blue-gray flex rounded-2xl m-auto mb-4">
+            <div className="postcard" class={`${post.body.length < 80 ? "h-64" : "h-72"} bg-light-blue-gray flex rounded-2xl m-auto mb-4`}>
 
                 <div className="post-container" class="w-full p-4 flex flex-col justify-between">
                     <div className="user-info " class="w-full p-2 h-1/4 flex gap-2">
@@ -141,6 +141,9 @@ const Postcard = ({ post, loggedUser }) => {
                         <div className="post-preview" class="h-2/4">
                             <Link to={'/viewpost/' + post._id} class="text-2xl font-bold">
                                 <p>{post.title}</p>
+                            </Link>
+                            <Link to={'/viewpost/' + post._id} >
+                                <p class="mt-4 text-justify">{post.body.length < 80 ? post.body : post.body.substr(0, 80) + "..."}</p>
                             </Link>
                         </div>
 
@@ -174,10 +177,12 @@ const Postcard = ({ post, loggedUser }) => {
                                     {downVoteNumber}
                                 </div>
 
-                                <div className="comments" class="flex gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="my-auto"><path d="M13,11H7a1,1,0,0,0,0,2h6a1,1,0,0,0,0-2Zm4-4H7A1,1,0,0,0,7,9H17a1,1,0,0,0,0-2Zm2-5H5A3,3,0,0,0,2,5V15a3,3,0,0,0,3,3H16.59l3.7,3.71A1,1,0,0,0,21,22a.84.84,0,0,0,.38-.08A1,1,0,0,0,22,21V5A3,3,0,0,0,19,2Zm1,16.59-2.29-2.3A1,1,0,0,0,17,16H5a1,1,0,0,1-1-1V5A1,1,0,0,1,5,4H19a1,1,0,0,1,1,1Z" /></svg>
-                                    <p class="">{post.replies.length}</p>
-                                </div>
+                                <Link to={'/viewpost/' + post._id}>
+                                    <div className="comments" class="flex gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="my-auto"><path d="M13,11H7a1,1,0,0,0,0,2h6a1,1,0,0,0,0-2Zm4-4H7A1,1,0,0,0,7,9H17a1,1,0,0,0,0-2Zm2-5H5A3,3,0,0,0,2,5V15a3,3,0,0,0,3,3H16.59l3.7,3.71A1,1,0,0,0,21,22a.84.84,0,0,0,.38-.08A1,1,0,0,0,22,21V5A3,3,0,0,0,19,2Zm1,16.59-2.29-2.3A1,1,0,0,0,17,16H5a1,1,0,0,1-1-1V5A1,1,0,0,1,5,4H19a1,1,0,0,1,1,1Z" /></svg>
+                                        <p class="">{post.replies.length}</p>
+                                    </div>
+                                </Link>
                             </div>
 
 
