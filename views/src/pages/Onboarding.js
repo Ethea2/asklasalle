@@ -8,10 +8,15 @@ const Onboarding = () => {
     const [password, setPassword] = useState("")
     const { login, isLoading, iserror } = useLogin()
     let button;
+    const [stayLogged, setStayLogged] = useState(false)
 
-    useEffect(() => {
-        localStorage.clear()
-    }, [])
+    const toggleLogged = () => {
+        if (stayLogged) {
+            setStayLogged(false)
+        } else {
+            setStayLogged(true)
+        }
+    }
 
     useEffect(() => {
         if (iserror) {
@@ -21,8 +26,11 @@ const Onboarding = () => {
 
     const submit = (e) => {
         e.preventDefault()
-        login(email, password)
+        localStorage.setItem('staylogged', stayLogged)
+        login(email, password, stayLogged)
     }
+
+
 
     if (!isLoading) {
         button =
@@ -79,6 +87,18 @@ const Onboarding = () => {
                         <Link to="/homepage" class="mt-4 font-semibold bg-mint rounded-lg text-center p-2">
                             Browse as guest
                         </Link>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex space-x-2">
+                            <div class="flex h-5 items-center">
+                                <input type="checkbox"  defaultChecked={false} onChange={toggleLogged} id="example7" name="checkGroup1" class="h-4 w-4 rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 focus:ring-offset-0 disabled:cursor-not-allowed disabled:text-gray-400" />
+                            </div>
+                            <label for="example7" class="text-sm">
+                                <div class="font-medium text-white">Remember me</div>
+                                <p class="text-gray-300">Keep me logged in for next time.</p>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>

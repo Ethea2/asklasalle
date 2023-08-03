@@ -4,7 +4,8 @@ const { get_users,
     create_user,
     edit_userInfo, 
     edit_user_picture,
-    loginUser, signupUser, fetch_user_by_email} = require('../controllers/userController')
+    loginUser, signupUser, fetch_user_by_email, refresh_token} = require('../controllers/userController');
+const requireAuth = require('../middlewear/requireAuth');
 
 const userRouter = express.Router();
 
@@ -17,13 +18,10 @@ userRouter.get('/:username', get_singleUser)
 // POST [create] new user
 userRouter.post('/', create_user)
 
+//fetch user by email
+userRouter.get('/email/:email', fetch_user_by_email)
+
 // DELETE user
-
-// UPDATE user info
-userRouter.patch('/:id', edit_userInfo)
-
-// UPDATE user picture
-userRouter.post('/:id/picture', edit_user_picture)
 
 //login route
 userRouter.post('/login', loginUser)
@@ -31,7 +29,16 @@ userRouter.post('/login', loginUser)
 //signup route
 userRouter.post('/signup', signupUser)
 
-//fetch user by email
-userRouter.get('/email/:email', fetch_user_by_email)
+// use auth
+userRouter.use(requireAuth)
+
+// UPDATE user info
+userRouter.patch('/:id', edit_userInfo)
+
+// UPDATE user picture
+userRouter.post('/:id/picture', edit_user_picture)
+
+//REFRESH   
+userRouter.post('/refresh', refresh_token)
 
 module.exports = userRouter
