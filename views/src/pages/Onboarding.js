@@ -26,7 +26,6 @@ const Onboarding = () => {
 
     const submit = (e) => {
         e.preventDefault()
-        localStorage.setItem('staylogged', stayLogged)
         login(email, password, stayLogged)
     }
 

@@ -346,25 +346,19 @@ const delete_comment = async (req, res) => {
     }
 
     try {
-        // Find the post by its ID
         const post = await Post.findById(postId);
 
         if (!post) {
             return res.status(404).json({ error: 'Post not found' });
         }
 
-        // Check if the commentId is in the replies array of the post
         if (!post.replies.includes(commentId)) {
             return res.status(404).json({ error: 'Comment not found for this post' });
         }
 
-        // Filter out the commentId from the replies array of the post
         post.replies = post.replies.filter(replyId => !replyId.equals(commentId));
         const comment = await Comment.findOneAndDelete({ commentId })
 
-
-
-        // Save the updated post without the deleted commentId
         await post.save();
 
         res.status(200).json({ message: 'Comment deleted successfully' });
@@ -383,17 +377,13 @@ const edit_comment = async (req, res) => {
     }
 
     try {
-        // Find the comment by its ID
         const comment = await Comment.findById(commentId);
 
         if (!comment) {
             return res.status(404).json({ error: 'Comment not found' });
         }
-
-        // Update the 'body' property of the comment
         comment.body = req.body.body || comment.body;
 
-        // Save the updated comment
         await comment.save();
 
         res.status(200).json(comment);
@@ -596,13 +586,10 @@ const search_post = async (req, res) => {
     }
 
     try {
-        // Split the search keywords into individual words
         const keywordArray = keywords.split(' ');
 
-        // Create a regular expression pattern to match any of the words in 'title' or 'body'
         const regexPattern = keywordArray.map(keyword => `(?=.*\\b${keyword}\\b)`).join('');
 
-        // Find posts that match the regex pattern in 'title' or 'body'
         const posts = await Post.find({
             $or: [
                 { title: { $regex: regexPattern, $options: 'i' } },
