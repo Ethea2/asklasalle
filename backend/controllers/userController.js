@@ -101,7 +101,7 @@ const createToken = (_id) => {
 };
 
 const createTokenOneDay = (_id) => {
-    return jwt.sign({ _id}, process.env.SECRET, {expiresIn: "10s"});
+    return jwt.sign({ _id}, process.env.SECRET, {expiresIn: "1d"});
 };
 
 const getTokenExpirationDate = (token) => {
