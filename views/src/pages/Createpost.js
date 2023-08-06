@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import { Link } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify'
-import useFetchSimpleUser from '../hooks/useFetchSimpleUser'
 import { useAuthContext } from "../hooks/useAuthContext";
 
 const Createpost = () => {

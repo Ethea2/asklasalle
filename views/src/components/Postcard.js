@@ -43,6 +43,10 @@ const Postcard = ({ post, loggedUser }) => {
     }
 
     const handleUpvote = () => {
+        if (!loggedUser) {
+            toast("❌ Cannot upvote please log in!")
+            return
+        }
         const userId = { userId: loggedUser[0]._id }
         if (upvote === false) {
             setUpvote(true)
@@ -73,6 +77,10 @@ const Postcard = ({ post, loggedUser }) => {
     }
 
     const handleDownvote = () => {
+        if (!loggedUser) {
+            toast("❌ Cannot downvote please log in!")
+            return
+        }
         const userId = { userId: loggedUser[0]._id }
         if (downvote === false) {
             setDownvote(true)

@@ -49,10 +49,11 @@ const Comments = ({ comment, postid, loggedUser }) => {
         }
     }, [loggedUser])
 
-
-
-
     const handleUpvote = () => {
+        if (!loggedUser) {
+            toast("❌ Cannot upvote please log in!")
+            return
+        }
         const userId = { userId: loggedUser[0]._id }
         if (upvote === false) {
             setUpvote(true)
@@ -83,6 +84,10 @@ const Comments = ({ comment, postid, loggedUser }) => {
     }
 
     const handleDownvote = () => {
+        if (!loggedUser) {
+            toast("❌ Cannot downvote please log in!")
+            return
+        }
         const userId = { userId: loggedUser[0]._id }
         if (downvote === false) {
             setDownvote(true)
