@@ -112,7 +112,6 @@ const Homepage = () => {
                                     </div>
                                     <div className="end-text" class="flex items-center justify-center">
                                         <p>You're all caught up! <Link to="/createpost"><span class="font-semibold text-teal underline">Create a new post!</span></Link></p>
-                                        
                                     </div>
                             </div>
                         }

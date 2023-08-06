@@ -17,6 +17,7 @@ const Postcard = ({ post, loggedUser }) => {
     const [downvote, setDownvote] = useState(false)
     const [upVoteNumber, setUpvoteNumber] = useState(post.upVote)
     const [downVoteNumber, setDownVoteNumber] = useState(post.downVote)
+    const [date, setDate] = useState()
     const { user } = useAuthContext()
 
     useEffect(() => {
@@ -32,7 +33,14 @@ const Postcard = ({ post, loggedUser }) => {
                 }
             }
         }
+        setDate(formatDate(post.createdAt))
     }, [loggedUser])
+
+    function formatDate(dateString) {
+        const dateObj = new Date(dateString);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return dateObj.toLocaleDateString('en-US', options);
+    }
 
     const handleUpvote = () => {
         const userId = { userId: loggedUser[0]._id }
@@ -119,18 +127,23 @@ const Postcard = ({ post, loggedUser }) => {
             <div className="postcard" class={`bg-light-blue-gray flex rounded-2xl m-auto mb-8`}>
 
                 <div className="post-container" class="w-full p-4 flex flex-col justify-between">
-                    <div className="user-info" class="w-full px-4  py-2 flex gap-2">
-                        <div className="rounded-full w-7 h-7 overflow-hidden">
-                            {
-                                userDetails &&
-                                <img src={userDetails[0].img} class="block object-cover"></img>
-                            }
-                        </div>
+                    <div className="user-info" class="flex justify-between ">
+                        <div className='flex w-full px-4 py-2 gap-2'>
+                            <div className="rounded-full w-7 h-7 overflow-hidden">
+                                {
+                                    userDetails &&
+                                    <img src={userDetails[0].img} class="block object-cover"></img>
+                                }
+                            </div>
 
-                        <div className="user-details" class="">
-                            <Link to={'/viewprofile/' + post.username}>
-                                <p>Posted by <span className="text-d-lasalle font-bold">@{post.username}</span></p>
-                            </Link>
+                            <div className="user-details" class="">
+                                <Link to={'/viewprofile/' + post.username}>
+                                    <p>Posted by <span className="text-d-lasalle font-bold">@{post.username}</span></p>
+                                </Link>
+                            </div>
+                        </div>
+                        <div className='py-2 w-32 justify-self-end'>
+                            {date}
                         </div>
                     </div>
 

@@ -25,6 +25,7 @@ const Navbar = () => {
     const submit = (e) => {
         if (e.key === 'Enter') {
             navigate('/search/' + search)
+            window.location.reload()
         }
     }
 
