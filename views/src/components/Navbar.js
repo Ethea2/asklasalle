@@ -44,26 +44,29 @@ const Navbar = () => {
                 <input onChange={(e) => setSearch(e.target.value)} onKeyDown={submit} type="text" placeholder="Search..." class="p-2.5 w-full rounded-xl border-none bg-slate-100" />
             </div>
             <div className="links"
-                class="
-                 flex
-                 items-center
-                 gap-x-5">
+                class="flex items-center">
                 {
                     user &&
-                    <div className='flex items-center'>
+                    <div className='flex gap-2 items-center'>
                         {
                             userDetails &&
                             <Link to={'/viewprofile/' + userDetails[0].username}>
-                                <div className='text-emerald-300 flex'>
-                                    {userDetails[0].username}
+                                <div class="flex p-2 rounded-xl bg-sky gap-2">
                                     <div className="rounded-full w-7 h-7 overflow-hidden">
                                         <img src={userDetails[0].img} class="block object-cover" />
                                     </div>
+                                    {userDetails[0].username}
                                 </div>
                             </Link>
                         }
                         <div className="logout cursor-pointer" onClick={(e) => handleLogout(e)} class="bg-sky p-2.5 rounded-xl">
-                            <p className='cursor-pointer'>Logout</p>
+                            <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 471.2 471.2" width="20px" height="20px" class="cursor-pointer">
+                                <g><g><path d="M227.619,444.2h-122.9c-33.4,0-60.5-27.2-60.5-60.5V87.5c0-33.4,27.2-60.5,60.5-60.5h124.9c7.5,0,13.5-6,13.5-13.5
+                                        s-6-13.5-13.5-13.5h-124.9c-48.3,0-87.5,39.3-87.5,87.5v296.2c0,48.3,39.3,87.5,87.5,87.5h122.9c7.5,0,13.5-6,13.5-13.5
+                                        S235.019,444.2,227.619,444.2z"/><path d="M450.019,226.1l-85.8-85.8c-5.3-5.3-13.8-5.3-19.1,0c-5.3,5.3-5.3,13.8,0,19.1l62.8,62.8h-273.9c-7.5,0-13.5,6-13.5,13.5
+                                        s6,13.5,13.5,13.5h273.9l-62.8,62.8c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4l85.8-85.8
+                                        C455.319,239.9,455.319,231.3,450.019,226.1z"/></g></g>
+                            </svg>
                         </div>
                     </div>
                 }

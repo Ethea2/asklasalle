@@ -1,6 +1,5 @@
 import { useParams, Link } from "react-router-dom"
 import useFetch from "../hooks/useFetch"
-import useFetchFiltered from "../hooks/useFetchFiltered"
 import Postcard from "../components/Postcard"
 import Navbar from "../components/Navbar"
 import EditProfileModal from "../components/EditProfileModal"

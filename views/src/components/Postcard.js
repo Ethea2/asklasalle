@@ -116,10 +116,10 @@ const Postcard = ({ post, loggedUser }) => {
 
     return (
         <>
-            <div className="postcard" class={`${post.body.length < 80 ? "h-64" : "h-72"} bg-light-blue-gray flex rounded-2xl m-auto mb-4`}>
+            <div className="postcard" class={`bg-light-blue-gray flex rounded-2xl m-auto mb-8`}>
 
                 <div className="post-container" class="w-full p-4 flex flex-col justify-between">
-                    <div className="user-info " class="w-full p-2 h-1/4 flex gap-2">
+                    <div className="user-info" class="w-full px-4  py-2 flex gap-2">
                         <div className="rounded-full w-7 h-7 overflow-hidden">
                             {
                                 userDetails &&
@@ -134,7 +134,7 @@ const Postcard = ({ post, loggedUser }) => {
                         </div>
                     </div>
 
-                    <hr class="bg-neutral-500 m-2 mt-4 h-0.5"></hr>
+                    <hr class="bg-neutral-500 m-2 h-0.5"></hr>
 
                     <div className="post-content" class="p-2 flex flex-col justify-between overflow-hidden">
 
