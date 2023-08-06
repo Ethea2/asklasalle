@@ -20,6 +20,7 @@ const Comments = ({ comment, postid, loggedUser }) => {
     const [upVoteNumber, setUpvoteNumber] = useState(comment.upVote)
     const [downVoteNumber, setDownVoteNumber] = useState(comment.downVote)
     const [userView, setUserView] = useState(false)
+    const [date, setDate] = useState()
     const { user } = useAuthContext()
     const userDetails = useFetchSimpleUser('/api/user/' + comment.username)
 
@@ -47,7 +48,14 @@ const Comments = ({ comment, postid, loggedUser }) => {
                 }
             }
         }
+        setDate(formatDate(comment.createdAt))
     }, [loggedUser])
+
+    function formatDate(dateString) {
+        const dateObj = new Date(dateString);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return dateObj.toLocaleDateString('en-US', options);
+    }
 
     const handleUpvote = () => {
         if (!loggedUser) {
@@ -162,6 +170,7 @@ const Comments = ({ comment, postid, loggedUser }) => {
 
                     <div className="comment-header" class="flex justify-between p-2">
                         <p><Link to={'/viewprofile/' + comment.username}><span class="font-bold text-d-lasalle">@{comment.username}</span> </Link>replied...</p>
+                        {date}
                         {
                             userView &&
                             <div className="edit-delete" class="flex gap-4">

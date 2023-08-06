@@ -12,6 +12,7 @@ import { useAuthContext } from "./hooks/useAuthContext";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLogout } from "./hooks/useLogout";
+import About from "./pages/About";
 
 function App() {
   const apiUrl =
@@ -111,6 +112,7 @@ function App() {
         <Route path='/viewpost/:postid' element={<Viewpost />} />
         <Route path='/viewprofile/:username' element={<Viewprofile />} />
         <Route path='/search/:keywords' element={<Search />} />
+        <Route path='/about' element={<About />} />
       </Routes>
     </div>
   );
