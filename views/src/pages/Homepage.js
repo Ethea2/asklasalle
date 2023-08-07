@@ -33,6 +33,12 @@ const Homepage = () => {
             setLoading(false)
         }
         fetchPosts()
+
+        if(!user) {
+            
+        } else {
+
+        }
     }, [])
 
     const fetchData = () => {
@@ -41,12 +47,12 @@ const Homepage = () => {
             const res = await axios(apiUrl + `/api/askposts?page=${page + 1}`)
             if (res.data.length === 0) {
                 setHasMore(false)
-            } else {    
+            } else {
                 setData([...data, ...res.data])
             }
         }
         fetchPosts()
-    } 
+    }
 
     const useUpvote = () => {
         setComments(false)
@@ -104,15 +110,15 @@ const Homepage = () => {
                         }
                         endMessage={
                             <div class="w-1/2 mb-8 flex flex-row gap-2 justify-center p-2 m-auto bg-gradient-to-b from-sky to-mint rounded-2xl">
-                                    <div className="icon" class="flex items-center justify-center">
-                                        <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect width="24" height="24" fill="none"/>
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.7071 9.29289C16.0976 9.68342 16.0976 10.3166 15.7071 10.7071L12.0243 14.3899C11.4586 14.9556 10.5414 14.9556 9.97568 14.3899L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929L11 12.5858L14.2929 9.29289C14.6834 8.90237 15.3166 8.90237 15.7071 9.29289Z" fill="#323232"/>
-                                        </svg>
-                                    </div>
-                                    <div className="end-text" class="flex items-center justify-center">
-                                        <p>You're all caught up! <Link to="/createpost"><span class="font-semibold text-teal underline">Create a new post!</span></Link></p>
-                                    </div>
+                                <div className="icon" class="flex items-center justify-center">
+                                    <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect width="24" height="24" fill="none" />
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.7071 9.29289C16.0976 9.68342 16.0976 10.3166 15.7071 10.7071L12.0243 14.3899C11.4586 14.9556 10.5414 14.9556 9.97568 14.3899L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929L11 12.5858L14.2929 9.29289C14.6834 8.90237 15.3166 8.90237 15.7071 9.29289Z" fill="#323232" />
+                                    </svg>
+                                </div>
+                                <div className="end-text" class="flex items-center justify-center">
+                                    <p>You're all caught up! {user && <Link to="/createpost"><span class="font-semibold text-teal underline">Create a new post!</span></Link>}</p>
+                                </div>
                             </div>
                         }
                     >
@@ -136,7 +142,7 @@ const Homepage = () => {
                         }
 
                         {((data && !upvotes) && (data && !comments)) &&
-                            data.sort((a,b) => b.createdAt.localeCompare(a.createdAt)).map((post) => {
+                            data.sort((a, b) => b.createdAt.localeCompare(a.createdAt)).map((post) => {
                                 return (
                                     <Postcard post={post} key={post._id} loggedUser={loggedUser} ></Postcard>
                                 )
@@ -145,7 +151,7 @@ const Homepage = () => {
 
                     </InfiniteScroll>
                 </div>
-            </div>
+            </div >
         </>
     );
 }
