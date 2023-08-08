@@ -7,23 +7,35 @@ import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'
 
 const Search = () => {
+    const apiUrl =
+        process.env.NODE_ENV === 'production'
+            ? process.env.REACT_APP_URL_PRODUCTION
+            : process.env.REACT_APP_URL_DEV
     const { keywords } = useParams()
-    const { data, isLoading, errorLoading } = useFetch('/api/askposts/search?keywords=' + keywords)
+    // const { data, isLoading, errorLoading } = useFetch('/api/askposts/search?keywords=' + keywords)
     const [pageData, setPageData] = useState()
     const [loading, setLoading] = useState()
     const [noFound, setNoFound] = useState()
 
     useEffect(() => {
-        setLoading(true)
-        setPageData(data)
-        if (!pageData) {
-            setLoading(false)
-            setNoFound(true)    
-        } else {
-            setLoading(false)
+        const fetchData = async () => {
             setNoFound(false)
-        } 
-    }, [data, isLoading, errorLoading])
+            setLoading(true)
+            setPageData([])
+            const response = await fetch(apiUrl + '/api/askposts/search?keywords=' + keywords)
+            const json = await response.json()
+
+            if (response.ok) {
+                console.log(json.error)
+                setPageData(json)
+                setLoading(false)
+            } else {
+                setNoFound(true)
+                setLoading(false)
+            }
+        }
+        fetchData()
+    }, [keywords])
     return (
         <>
             <div className="nav" class="sticky top-0 z-50">
