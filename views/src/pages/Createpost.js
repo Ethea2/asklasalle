@@ -33,7 +33,6 @@ const Createpost = () => {
             toast("You must be logged in")
         }
 
-        console.log(user.user)
 
         const post = { username, title, body }
 
@@ -56,7 +55,6 @@ const Createpost = () => {
             setBody('')
             setError(null)
             navigate(-1)
-            console.log('new post addded')
         }
     }
     return (

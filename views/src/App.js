@@ -57,7 +57,6 @@ function App() {
       } else {
         interval = setInterval(() => {
           if (remainingSeconds(expDate) < 5) {
-            console.log("Still Mounted")
             alert('Your session has expired, you will be logged out automatically');
             logout();
             clearInterval(interval);

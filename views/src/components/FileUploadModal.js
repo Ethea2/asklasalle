@@ -31,10 +31,6 @@ const FileUploadModal = ({ close, data }) => {
         }
 
         try {
-            // console.log(img)
-            // const imageData = {
-            //     "img" : img
-            // }
 
             setLoading(true)
             const form = new FormData()

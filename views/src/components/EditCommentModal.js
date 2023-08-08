@@ -37,7 +37,6 @@ const EditCommentModal = ({close, onClose, show, data, postid}) => {
             setBody('')
             setError(null)
             onClose()
-            console.log('user profile updated successfully!')
             
         }
     }

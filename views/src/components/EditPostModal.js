@@ -39,7 +39,6 @@ const EditPostModal = ({ close, show, onClose, data }) => {
             setBody('')
             setError(null)
             onClose()
-            console.log('post updated successfully!')
         }
     }
 

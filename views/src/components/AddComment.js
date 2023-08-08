@@ -38,7 +38,6 @@ const AddComment = ({data}) => {
             setBody('')
             setError(null)
             window.location.reload(false)
-            console.log('new comment addded')
         }
     }
     return (  

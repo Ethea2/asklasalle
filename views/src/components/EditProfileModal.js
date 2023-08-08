@@ -44,8 +44,6 @@ const EditProfileModal = ({close, onClose, show, data}) => {
             setBio('')
             setError(null)
             onClose()
-            console.log('user profile updated successfully!')
-            
         }
     }
     return(

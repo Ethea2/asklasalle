@@ -37,7 +37,6 @@ const Comments = ({ comment, postid, loggedUser }) => {
     useEffect(() => {
         if (loggedUser) {
             const userVote = loggedUser[0].votedComments.find((vote) => vote.comment === comment._id)
-            console.log(userVote)
             if (userVote) {
                 if (userVote.vote === 'upvote') {
                     setUpvote(true)
@@ -148,7 +147,6 @@ const Comments = ({ comment, postid, loggedUser }) => {
     }
 
     const handleClick = async () => {
-        console.log(comment)
         const response = await fetch(apiUrl + '/api/askposts/' + postid + "/comment/" + comment._id, {
             method: 'DELETE',
             headers: {
