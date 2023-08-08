@@ -16,7 +16,8 @@ const { get_posts,
     undo_downvote,
     undo_upvote,
     undo_upvote_comment,
-    undo_downvote_comment} = require('../controllers/postControllers')
+    undo_downvote_comment,
+    get_comments_user} = require('../controllers/postControllers')
 const requireAuth = require('../middlewear/requireAuth')
 
 const postRouter = express.Router();
@@ -35,6 +36,8 @@ postRouter.get('/:id/comment', get_comments)
 
 // GET single post by user
 postRouter.get('/:username/user', get_posts_user)
+
+postRouter.get('/:username/comments', get_comments_user)
 
 // require authentication for posting, editing, and deleting
 postRouter.use(requireAuth)

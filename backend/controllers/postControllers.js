@@ -608,6 +608,18 @@ const search_post = async (req, res) => {
     }
 };
 
+//GET comments by user
+const get_comments_user = async (req, res) => {
+    const { username } = req.params
+
+    const comments = await Comment.find({ "username": username }).select({})
+
+    if (!comments) {
+        return res.status(404).json({ error: 'There are no comments!' })
+    }
+    res.status(200).json(comments)
+}
+
 module.exports = {
     get_posts,
     get_singlePost,
@@ -627,5 +639,6 @@ module.exports = {
     undo_upvote,
     undo_downvote,
     undo_upvote_comment,
-    undo_downvote_comment
+    undo_downvote_comment,
+    get_comments_user
 }

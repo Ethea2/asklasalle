@@ -3,6 +3,7 @@ import useFetch from "../hooks/useFetch"
 import Postcard from "../components/Postcard"
 import Navbar from "../components/Navbar"
 import EditProfileModal from "../components/EditProfileModal"
+import Comments from "../components/Comments"
 import useFetchSimpleUser from "../hooks/useFetchSimpleUser"
 import { useEffect, useState } from "react"
 import FileUploadModal from "../components/FileUploadModal"
@@ -12,6 +13,9 @@ const Viewprofile = () => {
     const { username } = useParams()
     const { data, isLoading, errorLoading } = useFetch('/api/user/' + username)
     const posts = useFetchSimpleUser('/api/askposts/' + username + '/user')
+    const comments = useFetchSimpleUser('/api/askposts/' + username + '/comments')
+    const [postActive, setPostActive] = useState(true)
+    const [commActive, setCommActive] = useState(false)
     const { user } = useAuthContext()
     const [show, setShow] = useState(false)
     const [editPhoto, setEditPhoto] = useState(false)
@@ -27,6 +31,20 @@ const Viewprofile = () => {
             }
         }
     })
+
+    const handlePost = () => {
+        if (!postActive) {
+            setCommActive(false)
+            setPostActive(true)
+        }
+    }
+
+    const handleComment = () => {
+        if (!commActive) {
+            setPostActive(false)
+            setCommActive(true)
+        }
+    }
 
     return (
         <>
@@ -66,18 +84,14 @@ const Viewprofile = () => {
                             </div>
                         </div>
                     </div>
-                    {/* <hr class="w-full h-1 mt-6 bg-stone-700"/> */}
                 </div>
             }
 
             <div className="user-nav" class="bg-slate-300 py-6">
                 <div classname="nav-content" class="w-4/6 flex m-auto justify-between">
                     <div className="links" class="flex gap-8">
-                        <a href="#" class="block hover:font-semibold hover:text-teal">Posts</a>
-                        {
-                            userView &&
-                            <Link to="/createpost" class="block hover:font-semibold hover:text-teal">Create Post</Link>
-                        }
+                        <a class="block cursor-pointer hover:font-semibold hover:text-teal" onClick={handlePost}>Posts</a>
+                        <a class="block cursor-pointer hover:font-semibold hover:text-teal" onClick={handleComment}>Comments</a>
                     </div>
                     {
                         userView &&
@@ -95,20 +109,32 @@ const Viewprofile = () => {
                             }
                         </div>
                     }
-                    {/* <Link to={"/viewprofile/" + username + "/edit" }className="w-3/4 m-auto p-4 flex flex-row gap-4 justify-start text-red-600">View Profile as a User</Link> */}
                 </div>
             </div>
 
-            {posts && posts.map((data) => {
-                return (
-                    <div className="user-posts" class="w-3/4 m-auto mt-8 mb-8">
-                        <div className="filtered">
-                            <Postcard post={data} key={data.postid} loggedUser={loggedUser}></Postcard>
+            {
+                (postActive && posts) &&
+                posts.map((data) => {
+                    return (
+                        <div className="user-posts" class="w-3/4 m-auto mt-8 mb-8">
+                            <div className="filtered">
+                                <Postcard post={data} key={data.postid} loggedUser={loggedUser}></Postcard>
+                            </div>
                         </div>
-                    </div>
 
-                )
-            })}
+                    )
+                })
+            }
+            {
+                (!postActive && comments) &&
+                comments.map((comment) => {
+                    return (
+                        <div className="user-comments" class="w-3/4 m-auto mt-8 mb-8">
+                            <Comments comment={comment} loggedUser={loggedUser} />
+                        </div>
+                    )
+                })
+            }
         </>
     )
 }
