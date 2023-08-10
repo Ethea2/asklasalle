@@ -67,8 +67,8 @@ const Viewprofile = () => {
 
             {data &&
                 <div className="user-info" class="w-3/4 m-auto mt-8 p-6">
-                    <div className="user-info-content" class="w-full flex">
-                        <div className="profile-pic" class="w-[150px] h-[150px] overflow-hidden border border-green-500 my-auto">
+                    <div className="user-info-content" class="w-full flex items-center">
+                        <div className="profile-pic" class="w-[150px] h-[150px] overflow-hidden my-auto">
                             <img src={data[0].img} class="w-[150px] h-[150px] block object-cover" />
                         </div>
                         <div className="user-details" class="w-full mx-4">

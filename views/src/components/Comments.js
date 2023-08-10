@@ -167,8 +167,16 @@ const Comments = ({ comment, postid, loggedUser }) => {
                 <div className="main-content" class="w-full py-2 px-4">
 
                     <div className="comment-header" class="flex justify-between p-2">
-                        <p><Link to={'/viewprofile/' + comment.username}><span class="font-bold text-d-lasalle">@{comment.username}</span> </Link>replied...</p>
-                        {date}
+                        <div className="left-cont" class="my-2 flex flex-col gap-1.5">
+                            <div className="username">
+                                <p>
+                                    <Link to={'/viewprofile/' + comment.username}><span class="font-bold text-d-lasalle">@{comment.username}</span></Link> replied...
+                                </p>
+                            </div>
+                            <div className="date-commented" class="text-xs text-gray-500">
+                                {date}
+                            </div>
+                        </div>
                         {
                             userView &&
                             <div className="edit-delete" class="flex gap-4">

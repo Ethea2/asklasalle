@@ -136,22 +136,22 @@ const Postcard = ({ post, loggedUser }) => {
 
                 <div className="post-container" class="w-full p-4 flex flex-col justify-between">
                     <div className="user-info" class="flex justify-between ">
-                        <div className='flex w-full px-4 py-2 gap-2'>
-                            <div className="rounded-full w-7 h-7 overflow-hidden">
+                        <div className='flex w-full px-4 py-2 gap-2 items-center'>
+                            <div className="rounded-full w-7 h-7 overflow-hidden border-2 border-mint">
                                 {
                                     userDetails &&
-                                    <img src={userDetails[0].img} class="block object-cover"></img>
+                                    <img src={userDetails[0].img} class="block object-fit"></img>
                                 }
                             </div>
 
-                            <div className="user-details" class="">
+                            <div className="user-details" class="flex flex-col">
                                 <Link to={'/viewprofile/' + post.username}>
                                     <p>Posted by <span className="text-d-lasalle font-bold">@{post.username}</span></p>
                                 </Link>
+                                <div className="date-posted" class="text-xs text-gray-500">
+                                <p>{date}</p>
                             </div>
-                        </div>
-                        <div className='py-2 w-32 justify-self-end'>
-                            {date}
+                            </div>
                         </div>
                     </div>
 

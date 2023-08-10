@@ -33,12 +33,6 @@ const Homepage = () => {
             setLoading(false)
         }
         fetchPosts()
-
-        if(!user) {
-            
-        } else {
-
-        }
     }, [])
 
     const fetchData = () => {

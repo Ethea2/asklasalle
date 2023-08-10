@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLogout } from "./hooks/useLogout";
 import About from "./pages/About";
+import DoesNotExist from "./pages/DoesNotExist";
 
 function App() {
   const apiUrl =
@@ -112,6 +113,7 @@ function App() {
         <Route path='/viewprofile/:username' element={<Viewprofile />} />
         <Route path='/search/:keywords' element={<Search />} />
         <Route path='/about' element={<About />} />
+        <Route path='/*' element={<DoesNotExist />} />
       </Routes>
     </div>
   );
