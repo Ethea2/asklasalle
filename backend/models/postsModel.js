@@ -25,7 +25,11 @@ const postsSchema = new Schema({
     replies: [{
         type: Schema.Types.ObjectId,
         ref: 'Comment'
-    }]
+    }],
+    edited: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Post', postsSchema);
