@@ -52,8 +52,8 @@ const Navbar = () => {
                             userDetails &&
                             <Link to={'/viewprofile/' + userDetails[0].username}>
                                 <div class="flex p-2 rounded-xl bg-sky gap-2">
-                                    <div className="rounded-full w-7 h-7 overflow-hidden">
-                                        <img src={userDetails[0].img} class="block object-cover" />
+                                    <div className="rounded-full w-7 h-7 overflow-hidden border-2 border-black">
+                                        <img src={userDetails[0].img} class="block object-fit" />
                                     </div>
                                     {userDetails[0].username}
                                 </div>
