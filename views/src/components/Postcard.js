@@ -149,8 +149,8 @@ const Postcard = ({ post, loggedUser }) => {
                                     <p>Posted by <span className="text-d-lasalle font-bold">@{post.username}</span></p>
                                 </Link>
                                 <div className="date-posted" class="text-xs text-gray-500">
-                                <p>{date}</p>
-                            </div>
+                                    <span>{date}</span> <span>{post.edited ? "edited..." : ""}</span>
+                                </div>
                             </div>
                         </div>
                     </div>

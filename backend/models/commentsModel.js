@@ -17,6 +17,10 @@ const commentsSchema = new Schema({
     downVote: {
         type: Number,
         default: 0
+    },
+    edited: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true });
 

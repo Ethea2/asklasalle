@@ -174,7 +174,7 @@ const Comments = ({ comment, postid, loggedUser }) => {
                                 </p>
                             </div>
                             <div className="date-commented" class="text-xs text-gray-500">
-                                {date}
+                                <span>{date}</span> <span>{comment.edited ? "edited..." : ""}</span>
                             </div>
                         </div>
                         {

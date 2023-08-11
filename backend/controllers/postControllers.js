@@ -72,7 +72,7 @@ const edit_post = async (req, res) => {
     }
 
     const post = await Post.findOneAndUpdate({ _id: id }, {
-        ...req.body
+        ...req.body, edited: true
     })
     if (!post) {
         return res.status(404).json({ error: 'This post does not exist!' })
@@ -377,14 +377,13 @@ const edit_comment = async (req, res) => {
     }
 
     try {
-        const comment = await Comment.findById(commentId);
+        const comment = await Comment.findOneAndUpdate({ _id: commentId }, {
+            ...req.body, edited: true
+        });
 
         if (!comment) {
             return res.status(404).json({ error: 'Comment not found' });
         }
-        comment.body = req.body.body || comment.body;
-
-        await comment.save();
 
         res.status(200).json(comment);
     } catch (err) {

@@ -180,14 +180,14 @@ const PostcardFull = ({ post, loggedUser }) => {
                                     }
                                 </div>
 
-                                <div className="user-details" class="">
+                                <div className="user-details" class="flex flex-col">
                                     <Link to={'/viewprofile/' + post.username}>
                                         <p>Posted by <span className="text-d-lasalle font-bold">@{post.username}</span></p>
                                     </Link>
+                                    <div className="date-posted" class="text-xs text-gray-500">
+                                        <p>{date}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='py-2 w-32 justify-self-end'>
-                                {date}
                             </div>
                         </div>
                         {userView &&
