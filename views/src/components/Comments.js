@@ -158,7 +158,7 @@ const Comments = ({ comment, postid, loggedUser }) => {
 
         if (response.ok) {
             window.location.reload(false)
-        }
+        }//megatest
     }
 
     return (
