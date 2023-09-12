@@ -160,7 +160,7 @@ const Comments = ({ comment, postid, loggedUser }) => {
             window.location.reload(false)
         }
     }
-
+//test
     return (
         <>
             <div className="comment" class="mb-4 bg-light-blue-gray border border-dark-navy rounded-2xl flex">
@@ -176,7 +176,7 @@ const Comments = ({ comment, postid, loggedUser }) => {
                             <div className="date-commented" class="text-xs text-gray-500">
                                 <span>{date}</span> <span>{comment.edited ? "edited..." : ""}</span>
                             </div>
-                        </div>
+                        </div> 
                         {
                             userView &&
                             <div className="edit-delete" class="flex gap-4">
